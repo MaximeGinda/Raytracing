@@ -136,11 +136,11 @@ public:
             if (rmi.intersectionExists){
                 // Est-ce que c'est le plus proche ?
                 if (rmi.t > znear && rmi.t < result.t) {
-                    result.rayMeshIntersection = rmi;
-                    result.t = rmi.t;
-                    result.objectIndex = i;
-                    result.intersectionExists = true;
+                    result.intersectionExists = rmi.intersectionExists;
                     result.typeOfIntersectedObject = 0;
+                    result.objectIndex = i;
+                    result.t = rmi.t;
+                    result.rayMeshIntersection = rsi; 
                 }
             }
         }
@@ -172,7 +172,7 @@ public:
                     result.typeOfIntersectedObject = 2;
                     result.objectIndex = i;
                     result.t = rsi.t;    
-                    result.raySquareIntersection = rsi;     
+                    result.raySquareIntersection = rmi;     
                 }
             }
         }                
@@ -434,7 +434,6 @@ public:
             float coeff = calculateCoef(i, 10, inter);
             color *= 1 - coeff;
         }
-        
 
         return color;
     }
