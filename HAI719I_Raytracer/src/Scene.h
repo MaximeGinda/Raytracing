@@ -189,8 +189,6 @@ public:
 
          if(raySceneIntersection.intersectionExists){
             switch(raySceneIntersection.typeOfIntersectedObject){
-                case 0:
-                    break;
                 case 1: { // SPHERE
                     for(int lnum = 0; lnum < lights.size(); lnum++){
                         Vec3 newOrigin = raySceneIntersection.raySphereIntersection.intersection;
