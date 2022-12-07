@@ -421,11 +421,77 @@ public:
             light.type = LightType_Spherical;
             light.material = Vec3(1, 1, 1);
             light.isInCamSpace = false;
+        }   
+
+        { //Left Wall
+
+            squares.resize(squares.size() + 1);
+            Square &s = squares[squares.size() - 1];
+            s.setQuad(Vec3(-1., -1., 0.), Vec3(1., 0, 0.), Vec3(0., 1, 0.), 2., 2.);
+            s.scale(Vec3(2., 2., 1.));
+            s.translate(Vec3(0., 0., -2.));
+            s.rotate_y(90);
+            s.build_arrays();
+            s.material.diffuse_material = Vec3(1., 0., 0.);
+            s.material.specular_material = Vec3(1., 0., 0.);
+            s.material.shininess = 16;
         }
+
+        { //Back Wall
+            squares.resize(squares.size() + 1);
+            Square &s = squares[squares.size() - 1];
+            s.setQuad(Vec3(-1., -1., 0.), Vec3(1., 0, 0.), Vec3(0., 1, 0.), 2., 2.);
+            s.scale(Vec3(2., 2., 1.));
+            s.translate(Vec3(0., 0., -2.));
+            s.build_arrays();
+            s.material.diffuse_material = Vec3(1., 1., 1.);
+            s.material.specular_material = Vec3(1., 1., 1.);
+            s.material.shininess = 16;
+        }
+
+        { //Right Wall
+            squares.resize(squares.size() + 1);
+            Square &s = squares[squares.size() - 1];
+            s.setQuad(Vec3(-1., -1., 0.), Vec3(1., 0, 0.), Vec3(0., 1, 0.), 2., 2.);
+            s.translate(Vec3(0., 0., -2.));
+            s.scale(Vec3(2., 2., 1.));
+            s.rotate_y(-90);
+            s.build_arrays();
+            s.material.diffuse_material = Vec3(0.0, 1.0, 0.0);
+            s.material.specular_material = Vec3(0.0, 1.0, 0.0);
+            s.material.shininess = 16;
+        }
+
+        { //Floor
+            squares.resize(squares.size() + 1);
+            Square &s = squares[squares.size() - 1];
+            s.setQuad(Vec3(-1., -1., 0.), Vec3(1., 0, 0.), Vec3(0., 1, 0.), 2., 2.);
+            s.translate(Vec3(0., 0., -2.));
+            s.scale(Vec3(2., 2., 1.));
+            s.rotate_x(-90);
+            s.build_arrays();
+            s.material.diffuse_material = Vec3(1.0, 1.0, 1.0);
+            s.material.specular_material = Vec3(1.0, 1.0, 1.0);
+            s.material.shininess = 16;
+        }
+
+        { //Ceiling
+            squares.resize(squares.size() + 1);
+            Square &s = squares[squares.size() - 1];
+            s.setQuad(Vec3(-1., -1., 0.), Vec3(1., 0, 0.), Vec3(0., 1, 0.), 2., 2.);
+            s.translate(Vec3(0., 0., -2.));
+            s.scale(Vec3(2., 2., 1.));
+            s.rotate_x(90);
+            s.build_arrays();
+            s.material.diffuse_material = Vec3(1.0, 1.0, 1.0);
+            s.material.specular_material = Vec3(1.0, 1.0, 1.0);
+            s.material.shininess = 16;
+        }
+
         {
             meshes.resize(meshes.size() + 1);
             Mesh &m = meshes[meshes.size() - 1];
-            m.loadOFF("avion_n.off");
+            m.loadOFF("data/suzanne.off");
             m.centerAndScaleToUnit();
             /* m.scale(Vec3(2., 2., 2.));
             m.translate(Vec3(0., 0., 0.)); */
