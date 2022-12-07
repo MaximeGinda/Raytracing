@@ -136,7 +136,7 @@ public:
             if (rmi.intersectionExists){
                 // Est-ce que c'est le plus proche ?
                 if (rmi.t > znear && rmi.t < result.t) {
-                    result.rayMeshIntersection = rMeshi;
+                    result.rayMeshIntersection = rmi;
                     result.t = rmi.t;
                     result.objectIndex = i;
                     result.intersectionExists = true;
