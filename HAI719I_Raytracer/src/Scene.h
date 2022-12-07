@@ -128,6 +128,23 @@ public:
     RaySceneIntersection computeIntersection(Ray const & ray, float znear) {
         RaySceneIntersection result;
 
+         //On regarde toutes les meshes
+        int nbMeshes = this->meshes.size();
+        for (int i = 0; i < nbMeshes; i++)
+        {
+            RayTriangleIntersection rMeshi = this->meshes[i].intersect(ray);
+            if (rsi.intersectionExists){
+                // Est-ce que c'est le plus proche ?
+                if (rsi.t > znear && rMeshi.t < result.t) {
+                    result.rayMeshIntersection = rMeshi;
+                    result.t = rMeshi.t;
+                    result.objectIndex = i;
+                    result.intersectionExists = true;
+                    result.typeOfIntersectedObject = MESH_INTERSECTION;
+                }
+            }
+        }
+
         // On regarde toutes les spheres
         int spheresSize = (int)spheres.size();
         for(int i = 0; i < spheresSize; i++){
@@ -357,16 +374,66 @@ public:
                     
                 }
                     break;
+                case 0 : { // Mesh
+                        if(meshes[raySceneIntersection.objectIndex].material.type == Material_Diffuse_Blinn_Phong){
+                            
+                            Vec3 n = raySceneIntersection.rayMeshIntersection.normal;
+                            n.normalize();
+
+                            Vec3 l = lights[0].pos - raySceneIntersection.rayMeshIntersection.intersection;
+                            l.normalize();
+
+                            Vec3 r  = 2 * (Vec3::dot(l,n)) * n - l;
+                            r.normalize();
+
+                            Vec3 v = ray.origin() - raySceneIntersection.rayMeshIntersection.intersection;
+                            v.normalize();
+
+                            float theta = std::max(Vec3::dot(n,l), 0.f);
+                            float alpha = std::max(Vec3::dot(r,v), 0.f);
+
+                            float compAmbianteR = meshes[raySceneIntersection.objectIndex].material.ambient_material[0] * lights[lnum].material[0], 
+                                  compAmbianteG = meshes[raySceneIntersection.objectIndex].material.ambient_material[1] * lights[lnum].material[1], 
+                                  compAmbianteB = meshes[raySceneIntersection.objectIndex].material.ambient_material[2] * lights[lnum].material[2];
+                            float compDiffuseR = meshes[raySceneIntersection.objectIndex].material.diffuse_material[0] * lights[lnum].material[0] * theta,
+                                  compDiffuseG = meshes[raySceneIntersection.objectIndex].material.diffuse_material[1] * lights[lnum].material[1] * theta, 
+                                  compDiffuseB = meshes[raySceneIntersection.objectIndex].material.diffuse_material[2] * lights[lnum].material[2] * theta;
+                            float compSpeculaireR = meshes[raySceneIntersection.objectIndex].material.specular_material[0] * lights[lnum].material[0] * pow(alpha, this->meshes[raySceneIntersection.objectIndex].material.shininess),
+                                  compSpeculaireG = meshes[raySceneIntersection.objectIndex].material.specular_material[1] * lights[lnum].material[1] * pow(alpha, this->meshes[raySceneIntersection.objectIndex].material.shininess),
+                                  compSpeculaireB = meshes[raySceneIntersection.objectIndex].material.specular_material[2] * lights[lnum].material[2] * pow(alpha, this->meshes[raySceneIntersection.objectIndex].material.shininess);
+
+                            
+                            color[0] = compAmbianteR + compDiffuseR + compSpeculaireR;
+
+                            // pour éviter de corrompre l'image
+                            if(color[0] <= 0.00001){
+                                color[0] = 0;
+                            }
+
+                            color[1] = compAmbianteG + compDiffuseG + compSpeculaireG;
+
+                            if(color[1] <= 0.00001){
+                                color[1] = 0;
+                            }
+
+                            color[2] = compAmbianteB + compDiffuseB + compSpeculaireB;
+                            
+                            if(color[2] <= 0.00001){
+                                color[2] = 0;
+                            }
+                        }
+                }   
+                    break;
                 default:
                     break;
             }
         }
 
         // Shadow
-        for(int i = 0; i < lights.size(); i++){
-            float coeff = calculateCoef(i, 10, inter);
-            color *= 1 - coeff;
-        }
+        // for(int i = 0; i < lights.size(); i++){
+        //     float coeff = calculateCoef(i, 10, inter);
+        //     color *= 1 - coeff;
+        // }
         
 
         return color;
