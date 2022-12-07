@@ -80,7 +80,6 @@ public:
 
         for (unsigned int i = 0; i < meshes.size(); i++)
         {
-            break;
             // RayTriangleIntersection rayMesh = meshes[i].intersect(ray);
             // if (rayMesh.intersectionExists) return rayMesh.t;
         }
