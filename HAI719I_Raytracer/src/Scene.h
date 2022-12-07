@@ -129,18 +129,18 @@ public:
         RaySceneIntersection result;
 
          //On regarde toutes les meshes
-        int nbMeshes = this->meshes.size();
-        for (int i = 0; i < nbMeshes; i++)
+        int meshesSize = this->meshes.size();
+        for (int i = 0; i < meshesSize; i++)
         {
-            RayTriangleIntersection rMeshi = this->meshes[i].intersect(ray);
-            if (rsi.intersectionExists){
+            RayTriangleIntersection rmi = this->meshes[i].intersect(ray);
+            if (rmi.intersectionExists){
                 // Est-ce que c'est le plus proche ?
-                if (rsi.t > znear && rMeshi.t < result.t) {
+                if (rmi.t > znear && rmi.t < result.t) {
                     result.rayMeshIntersection = rMeshi;
-                    result.t = rMeshi.t;
+                    result.t = rmi.t;
                     result.objectIndex = i;
                     result.intersectionExists = true;
-                    result.typeOfIntersectedObject = MESH_INTERSECTION;
+                    result.typeOfIntersectedObject = 0;
                 }
             }
         }
