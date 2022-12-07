@@ -80,8 +80,9 @@ public:
 
         for (unsigned int i = 0; i < meshes.size(); i++)
         {
-            RayTriangleIntersection rayMesh = meshes[i].intersect(ray);
-            if (rayMesh.intersectionExists) return rayMesh.t;
+            break;
+            // RayTriangleIntersection rayMesh = meshes[i].intersect(ray);
+            // if (rayMesh.intersectionExists) return rayMesh.t;
         }
         for (unsigned int i = 0; i < spheres.size(); i++)
         {
