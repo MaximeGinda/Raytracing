@@ -47,24 +47,16 @@ public:
     }
     float distanceToSupportPlane( Vec3 const & p ) const { return sqrt( squareDistanceToSupportPlane(p) ); }
     bool isParallelTo( Line const & L ) const {
-        // bool result;
-        // //TODO completer
-        
-        // return result;
         return Vec3::dot(m_normal, L.direction()) == 0;
     }
     Vec3 getIntersectionPointWithSupportPlane( Line const & L ) const {
-        // // you should check first that the line is not parallel to the plane!
-        // Vec3 result;
-        // //TODO completer
-        // return result;
-
-        // you should check first that the line is not parallel to the plane!
         Vec3 result;
+
         Plane plane = Plane(m_c[0], m_normal);
-        if(!isParallelTo(L)) {
+
+        if(!isParallelTo(L)) 
             result = plane.getIntersectionPoint(L);
-        }
+        
         return result;
     }
     void computeBarycentricCoordinates( Vec3 const & p , float & u0 , float & u1 , float & u2 ) const {
@@ -87,12 +79,14 @@ public:
             if(w0 <= 1 && w0 >= 0 && w1 <= 1 && w1 >= 0 && w2 <= 1 && w2 >= 0) {
                 
                 Plane plane = Plane(m_c[0], m_normal);
-                Vec3 a = plane.center();
-                Vec3 n = plane.normal();
-                float D = Vec3::dot(a, n);
-                Vec3 o = ray.origin();
-                Vec3 d = ray.direction();
-                float t = (D - Vec3::dot(o, n)) / Vec3::dot(d, n);
+
+                Vec3 center = plane.center();
+                Vec3 normal = plane.normal();
+
+                Vec3 ori = ray.origin();
+                Vec3 dir = ray.direction();
+
+                float t = (Vec3::dot(center, n) - Vec3::dot(ori, normal)) / Vec3::dot(dir, normal);
 
                 result.intersectionExists = true;
                 result.t = t;

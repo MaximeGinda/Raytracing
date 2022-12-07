@@ -26,19 +26,19 @@ public:
         return Vec3::dot(m_normal, L.direction()) == 0;
     }
     Vec3 getIntersectionPoint( Line const & L ) const {
-        // you should check first that the line is not parallel to the plane!
         Vec3 result;
+
         if(!isParallelTo(L)) {
-            Vec3 a = m_center;
-            Vec3 n = m_normal;
 
-            float D = Vec3::dot(a, n);
-            Vec3 o = L.origin();
-            Vec3 d = L.direction();
+            Vec3 center = m_center;
+            Vec3 normal = m_normal;
 
-            float t = (D - Vec3::dot(o, n)) / Vec3::dot(d, n);
+            Vec3 ori = L.origin();
+            Vec3 dir = L.direction();
 
-            result = o + t * d;
+            float t = (Vec3::dot(center, normal) - Vec3::dot(ori, normal)) / Vec3::dot(dir, normal);
+
+            result = ori + t * dir;
         }
         return result;
     }

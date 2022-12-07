@@ -78,21 +78,27 @@ public:
     float searchFirstIntersection(Ray const &ray)
     {
 
-        for (unsigned int i = 0; i < meshes.size(); i++)
+        size_t meshesSize = meshes.size();
+        for (size_t i = 0; i < meshesSize; i++)
         {
             // RayTriangleIntersection rayMesh = meshes[i].intersect(ray);
             // if (rayMesh.intersectionExists) return rayMesh.t;
         }
-        for (unsigned int i = 0; i < spheres.size(); i++)
+
+        size_t spheresSize = spheres.size();
+        for (size_t i = 0; i < spheresSize; i++)
         {
             RaySphereIntersection raySphere = spheres[i].intersect(ray);
             if (raySphere.intersectionExists && spheres[i].material.type != Material_Glass) return raySphere.t;
         }
-        for (unsigned int i = 0; i < squares.size(); i++)
+
+        size_t squaresSize = squares.size();
+        for (size_t i = 0; i < squaresSize; i++)
         {
             RaySquareIntersection raySquare = squares[i].intersect(ray);
             if (raySquare.intersectionExists && squares[i].material.type != Material_Glass) return raySquare.t;
         }
+
         return FLT_MAX;
     }
 
@@ -121,6 +127,7 @@ public:
             if (ombre < 1 && ombre > 0.00001) nb_ombre++;
 
         }
+
         return (float)nb_ombre / echant; 
     }
 
@@ -129,8 +136,8 @@ public:
         RaySceneIntersection result;
 
          //On regarde toutes les meshes
-        int meshesSize = this->meshes.size();
-        for (int i = 0; i < meshesSize; i++)
+        size_t meshesSize = meshes.size();
+        for (size_t i = 0; i < meshesSize; i++)
         {
             RayTriangleIntersection rmi = this->meshes[i].intersect(ray);
             if (rmi.intersectionExists){
@@ -146,8 +153,8 @@ public:
         }
 
         // On regarde toutes les spheres
-        int spheresSize = (int)spheres.size();
-        for(int i = 0; i < spheresSize; i++){
+        size_t spheresSize = spheres.size();
+        for(size_t i = 0; i < spheresSize; i++){
             RaySphereIntersection rsi = spheres[i].intersect(ray);
             if (rsi.intersectionExists){
                 // Est-ce que c'est le plus proche ?
@@ -162,8 +169,8 @@ public:
         }  
 
         //On regarde tous les carrés
-        int squaresSize = (int)squares.size();
-        for(int i = 0; i < squaresSize; i++){
+        size_t squaresSize = squares.size();
+        for(size_t i = 0; i < squaresSize; i++){
             RaySquareIntersection rsi = squares[i].intersect(ray);
             if (rsi.intersectionExists){
                 // Est-ce que c'est le plus proche ?
@@ -186,11 +193,12 @@ public:
         Ray rayShadow;
         Vec3 color;
         Vec3 inter;
-
+        
+        size_t lightsSize = lights.size()
          if(raySceneIntersection.intersectionExists){
             switch(raySceneIntersection.typeOfIntersectedObject){
                 case 1: { // SPHERE
-                    for(int lnum = 0; lnum < lights.size(); lnum++){
+                    for(size_t lnum = 0; lnum < lightsSize; lnum++){
                         Vec3 newOrigin = raySceneIntersection.raySphereIntersection.intersection;
                         Vec3 newNorm = raySceneIntersection.raySphereIntersection.normal;
 
@@ -281,7 +289,7 @@ public:
                 } 
                     break;
                 case 2: { // SQUARE 
-                    for(int lnum = 0; lnum < lights.size(); lnum++){
+                    for(size_t lnum = 0; lnum < lightsSize; lnum++){
 
                         Vec3 newOrigin = raySceneIntersection.raySquareIntersection.intersection;
                         Vec3 newNorm = raySceneIntersection.raySquareIntersection.normal;
@@ -373,7 +381,7 @@ public:
                 }
                     break;
                 case 0 : { // Mesh
-                    for(int lnum = 0; lnum < lights.size(); lnum++){
+                    for(size_t lnum = 0; lnum < lightsSize; lnum++){
                         if(meshes[raySceneIntersection.objectIndex].material.type == Material_Diffuse_Blinn_Phong){
                             
                             Vec3 n = raySceneIntersection.rayMeshIntersection.normal;
@@ -430,7 +438,7 @@ public:
         }
 
         // Shadow
-        for(int i = 0; i < lights.size(); i++){
+        for(size_t i = 0; i < lightsSize; i++){
             float coeff = calculateCoef(i, 10, inter);
             color *= 1 - coeff;
         }
