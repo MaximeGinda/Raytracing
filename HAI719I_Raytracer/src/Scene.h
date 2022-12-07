@@ -81,8 +81,8 @@ public:
         size_t meshesSize = meshes.size();
         for (size_t i = 0; i < meshesSize; i++)
         {
-            // RayTriangleIntersection rayMesh = meshes[i].intersect(ray);
-            // if (rayMesh.intersectionExists) return rayMesh.t;
+            RayTriangleIntersection rayMesh = meshes[i].intersect(ray);
+            if (rayMesh.intersectionExists) return rayMesh.t;
         }
 
         size_t spheresSize = spheres.size();
@@ -195,7 +195,7 @@ public:
         Vec3 inter;
 
         size_t lightsSize = lights.size();
-        
+
          if(raySceneIntersection.intersectionExists){
             switch(raySceneIntersection.typeOfIntersectedObject){
                 case 1: { // SPHERE
