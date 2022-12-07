@@ -110,6 +110,7 @@ public:
         // 4) Finally, if all conditions were met, then there is an intersection! :
 
         return result;
+        }
     }
 };
 #endif
