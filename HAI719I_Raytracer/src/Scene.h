@@ -193,8 +193,9 @@ public:
         Ray rayShadow;
         Vec3 color;
         Vec3 inter;
+
+        size_t lightsSize = lights.size();
         
-        size_t lightsSize = lights.size()
          if(raySceneIntersection.intersectionExists){
             switch(raySceneIntersection.typeOfIntersectedObject){
                 case 1: { // SPHERE

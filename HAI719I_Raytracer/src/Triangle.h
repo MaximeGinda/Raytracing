@@ -69,9 +69,8 @@ public:
         RayTriangleIntersection result;
         result.intersectionExists = false;
 
-        // 1) check that the ray is not parallel to the triangle:
         if(!isParallelTo(ray)) {
-            // 2) check that the triangle is "in front of" the ray:
+
             Vec3 p = getIntersectionPointWithSupportPlane(ray);
             float w0, w1, w2;
             computeBarycentricCoordinates(p, w0, w1, w2);
@@ -86,7 +85,7 @@ public:
                 Vec3 ori = ray.origin();
                 Vec3 dir = ray.direction();
 
-                float t = (Vec3::dot(center, n) - Vec3::dot(ori, normal)) / Vec3::dot(dir, normal);
+                float t = (Vec3::dot(center, normal) - Vec3::dot(ori, normal)) / Vec3::dot(dir, normal);
 
                 result.intersectionExists = true;
                 result.t = t;
@@ -97,11 +96,6 @@ public:
                 result.normal = m_normal;
 
             }
-
-        // 3) check that the intersection point is inside the triangle:
-        // CONVENTION: compute u,v such that p = w0*c0 + w1*c1 + w2*c2, check that 0 <= w0,w1,w2 <= 1
-
-        // 4) Finally, if all conditions were met, then there is an intersection! :
 
         return result;
         }

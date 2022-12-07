@@ -212,7 +212,7 @@ public:
 
             RayTriangleIntersection rti = t.getIntersection(ray);
 
-            if(intersection.intersectionExists && closestIntersection.t > rti.t) 
+            if(rti.intersectionExists && closestIntersection.t > rti.t) 
                 closestIntersection = rti;
         }
 
