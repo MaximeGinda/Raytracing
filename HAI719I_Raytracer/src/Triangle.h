@@ -72,10 +72,10 @@ public:
         if(!isParallelTo(ray)) {
 
             Vec3 p = getIntersectionPointWithSupportPlane(ray);
-            float w0, w1, w2;
-            computeBarycentricCoordinates(p, w0, w1, w2);
+            float u0, u1, u2;
+            computeBarycentricCoordinates(p, u0, u1, u2);
 
-            if(w0 <= 1 && w0 >= 0 && w1 <= 1 && w1 >= 0 && w2 <= 1 && w2 >= 0) {
+            if(u0 <= 1 && u0 >= 0 && u1 <= 1 && u1 >= 0 && u2 <= 1 && u2 >= 0) {
                 
                 Plane plane = Plane(m_c[0], m_normal);
 
@@ -89,9 +89,9 @@ public:
 
                 result.intersectionExists = true;
                 result.t = t;
-                result.w0 = w0;
-                result.w1 = w1;
-                result.w2 = w2;
+                result.w0 = u0;
+                result.w1 = u1;
+                result.w2 = u2;
                 result.intersection = p;
                 result.normal = m_normal;
 

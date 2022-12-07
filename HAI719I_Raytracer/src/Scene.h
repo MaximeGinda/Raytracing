@@ -89,7 +89,8 @@ public:
         for (size_t i = 0; i < spheresSize; i++)
         {
             RaySphereIntersection raySphere = spheres[i].intersect(ray);
-            if (raySphere.intersectionExists && spheres[i].material.type != Material_Glass) return raySphere.t;
+            // if (raySphere.intersectionExists && spheres[i].material.type != Material_Glass) return raySphere.t;
+            if (raySphere.intersectionExists) return raySphere.t;
         }
 
         size_t squaresSize = squares.size();
@@ -641,11 +642,10 @@ public:
             s.scale(Vec3(2., 2., 1.));
             s.translate(Vec3(0., 0., -2.));
             s.build_arrays();  
-            s.material.type = Material_Mirror;
+            // s.material.type = Material_Mirror;
             s.material.diffuse_material = Vec3( 0.,0.,1. );
             s.material.specular_material = Vec3( 1.,1.,1. );
             s.material.shininess = 16;
-            //s.m_normal = -1.*s.m_normal;
         }
 
         { //Left Wall
@@ -657,7 +657,7 @@ public:
             s.translate(Vec3(0., 0., -2.));
             s.rotate_y(90);
             s.build_arrays();
-            s.material.type = Material_Mirror;
+            // s.material.type = Material_Mirror;
             s.material.diffuse_material = Vec3( 1.,0.,0. );
             s.material.specular_material = Vec3( 1.,0.,0. );
             s.material.shininess = 16;
