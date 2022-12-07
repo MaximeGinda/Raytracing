@@ -425,7 +425,7 @@ public:
         {
             meshes.resize(meshes.size() + 1);
             Mesh &m = meshes[meshes.size() - 1];
-            m.loadOFF("data/avion_n.off");
+            m.loadOFF("avion_n.off");
             m.centerAndScaleToUnit();
             /* m.scale(Vec3(2., 2., 2.));
             m.translate(Vec3(0., 0., 0.)); */
