@@ -430,10 +430,10 @@ public:
         }
 
         // Shadow
-        // for(int i = 0; i < lights.size(); i++){
-        //     float coeff = calculateCoef(i, 10, inter);
-        //     color *= 1 - coeff;
-        // }
+        for(int i = 0; i < lights.size(); i++){
+            float coeff = calculateCoef(i, 10, inter);
+            color *= 1 - coeff;
+        }
         
 
         return color;
