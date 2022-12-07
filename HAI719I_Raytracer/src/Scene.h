@@ -141,7 +141,7 @@ public:
                     result.typeOfIntersectedObject = 0;
                     result.objectIndex = i;
                     result.t = rmi.t;
-                    result.rayMeshIntersection = rsi; 
+                    result.rayMeshIntersection = rmi; 
                 }
             }
         }
@@ -173,7 +173,7 @@ public:
                     result.typeOfIntersectedObject = 2;
                     result.objectIndex = i;
                     result.t = rsi.t;    
-                    result.raySquareIntersection = rmi;     
+                    result.raySquareIntersection = rsi;     
                 }
             }
         }                
