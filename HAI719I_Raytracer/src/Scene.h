@@ -506,14 +506,11 @@ public:
             Mesh &m = meshes[meshes.size() - 1];
             m.loadOFF("data/suzanne.off");
             m.centerAndScaleToUnit();
-            /* m.scale(Vec3(2., 2., 2.));
-            m.translate(Vec3(0., 0., 0.)); */
             m.material.type = Material_Diffuse_Blinn_Phong;
             m.material.diffuse_material = Vec3(1., 0., 0.);
             m.material.specular_material = Vec3(1., 1., 1.);
             m.material.shininess = 16;
             m.build_arrays();
-
         }
     }
 

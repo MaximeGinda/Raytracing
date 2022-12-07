@@ -47,25 +47,62 @@ public:
     }
     float distanceToSupportPlane( Vec3 const & p ) const { return sqrt( squareDistanceToSupportPlane(p) ); }
     bool isParallelTo( Line const & L ) const {
-        bool result;
-        //TODO completer
-        return result;
+        // bool result;
+        // //TODO completer
+        
+        // return result;
+        return Vec3::dot(m_normal, L.direction()) == 0;
     }
     Vec3 getIntersectionPointWithSupportPlane( Line const & L ) const {
+        // // you should check first that the line is not parallel to the plane!
+        // Vec3 result;
+        // //TODO completer
+        // return result;
+
         // you should check first that the line is not parallel to the plane!
         Vec3 result;
-        //TODO completer
+        Plane plane = Plane(m_c[0], m_normal);
+        if(!isParallelTo(L)) {
+            result = plane.getIntersectionPoint(L);
+        }
         return result;
     }
     void computeBarycentricCoordinates( Vec3 const & p , float & u0 , float & u1 , float & u2 ) const {
-        //TODO Complete
+        u0 = Vec3::dot(m_normal, Vec3::cross(m_c[1] - m_c[0], p - m_c[0]));
+        u1 = Vec3::dot(m_normal, Vec3::cross(m_c[2] - m_c[1], p - m_c[1]));
+        u2 = Vec3::dot(m_normal, Vec3::cross(m_c[0] - m_c[2], p - m_c[2]));
     }
 
     RayTriangleIntersection getIntersection( Ray const & ray ) const {
         RayTriangleIntersection result;
-        // 1) check that the ray is not parallel to the triangle:
+        result.intersectionExists = false;
 
-        // 2) check that the triangle is "in front of" the ray:
+        // 1) check that the ray is not parallel to the triangle:
+        if(!isParallelTo(ray)) {
+            // 2) check that the triangle is "in front of" the ray:
+            Vec3 p = getIntersectionPointWithSupportPlane(ray);
+            float w0, w1, w2;
+            computeBarycentricCoordinates(p, w0, w1, w2);
+
+            if(w0 <= 1 && w0 >= 0 && w1 <= 1 && w1 >= 0 && w2 <= 1 && w2 >= 0) {
+                
+                Plane plane = Plane(m_c[0], m_normal);
+                Vec3 a = plane.center();
+                Vec3 n = plane.normal();
+                float D = Vec3::dot(a, n);
+                Vec3 o = ray.origin();
+                Vec3 d = ray.direction();
+                float t = (D - Vec3::dot(o, n)) / Vec3::dot(d, n);
+
+                result.intersectionExists = true;
+                result.t = t;
+                result.w0 = w0;
+                result.w1 = w1;
+                result.w2 = w2;
+                result.intersection = p;
+                result.normal = m_normal;
+
+            }
 
         // 3) check that the intersection point is inside the triangle:
         // CONVENTION: compute u,v such that p = w0*c0 + w1*c1 + w2*c2, check that 0 <= w0,w1,w2 <= 1
