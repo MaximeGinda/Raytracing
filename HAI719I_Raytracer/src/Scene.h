@@ -169,7 +169,6 @@ public:
         Ray rayShadow;
         Vec3 color;
         Vec3 inter;
-        bool fait = true;
 
          if(raySceneIntersection.intersectionExists){
             switch(raySceneIntersection.typeOfIntersectedObject){
@@ -227,8 +226,6 @@ public:
                             if(color[2] <= 0.00001){
                                 color[2] = 0;
                             }
-
-                            fait = true;
                         }
                         else if(spheres[raySceneIntersection.objectIndex].material.type == Material_Glass){
 
@@ -247,8 +244,6 @@ public:
                                 
                                 Ray newRay = Ray(newOrigin,newDir);
                                 color = rayTraceRecursive(newRay,NRemainingBounces-1,0.f);
-
-                                fait = false;
                             }
                         }
                         else if(spheres[raySceneIntersection.objectIndex].material.type == Material_Mirror){
@@ -262,9 +257,7 @@ public:
                                 newDir.normalize();
 
                                 Ray newRay = Ray(newOrigin,newDir);
-                                color = rayTraceRecursive(newRay, NRemainingBounces-1,0.f);
-
-                                fait = true;
+                                color = rayTraceRecursive(newRay, NRemainingBounces-1,0.000001f);
                             }
                         }
                         
@@ -354,7 +347,7 @@ public:
                                 newDir.normalize();
 
                                 Ray newRay = Ray(newOrigin,newDir);
-                                color = rayTraceRecursive(newRay, NRemainingBounces-1,0.f);
+                                color = rayTraceRecursive(newRay, NRemainingBounces-1,0.000001f);
 
                             }
                         }
@@ -409,6 +402,35 @@ public:
             s.material.diffuse_material = Vec3( 1.,0.,0. );
             s.material.specular_material = Vec3( 0.2,0.2,0.2 );
             s.material.shininess = 20;
+        }
+    }
+
+    void setup_single_mesh(){
+        meshes.clear();
+        spheres.clear();
+        squares.clear();
+        lights.clear();
+
+         {
+            lights.resize(lights.size() + 1);
+            Light &light = lights[lights.size() - 1];
+            light.pos = Vec3(0.0, 1.5, 0.0);
+            light.radius = 2.5f;
+            light.powerCorrection = 2.f;
+            light.type = LightType_Spherical;
+            light.material = Vec3(1, 1, 1);
+            light.isInCamSpace = false;
+        }
+        {
+            meshes.resize(spheres.size() + 1);
+            Mesh &m = meshes[meshes.size() - 1];
+            m.loadOFF("data/avion_n.off");
+            m.centerAndScaleToUnit();
+            m.material.type = Material_Diffuse_Blinn_Phong;
+            m.material.diffuse_material = Vec3(1., 0., 0.);
+            m.material.specular_material = Vec3(1., 1., 1.);
+            m.material.shininess = 16;
+            m.build_arrays();
         }
     }
 
