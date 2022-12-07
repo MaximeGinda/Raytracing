@@ -81,16 +81,16 @@ public:
         size_t meshesSize = meshes.size();
         for (size_t i = 0; i < meshesSize; i++)
         {
-            RayTriangleIntersection rayMesh = meshes[i].intersect(ray);
-            if (rayMesh.intersectionExists) return rayMesh.t;
+            // RayTriangleIntersection rayMesh = meshes[i].intersect(ray);
+            // if (rayMesh.intersectionExists) return rayMesh.t;
         }
 
         size_t spheresSize = spheres.size();
         for (size_t i = 0; i < spheresSize; i++)
         {
             RaySphereIntersection raySphere = spheres[i].intersect(ray);
-            // if (raySphere.intersectionExists && spheres[i].material.type != Material_Glass) return raySphere.t;
-            if (raySphere.intersectionExists) return raySphere.t;
+            if (raySphere.intersectionExists && spheres[i].material.type != Material_Glass) return raySphere.t;
+            // if (raySphere.intersectionExists) return raySphere.t;
         }
 
         size_t squaresSize = squares.size();
