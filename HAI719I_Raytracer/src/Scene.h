@@ -373,6 +373,7 @@ public:
                 }
                     break;
                 case 0 : { // Mesh
+                    for(int lnum = 0; lnum < lights.size(); lnum++){
                         if(meshes[raySceneIntersection.objectIndex].material.type == Material_Diffuse_Blinn_Phong){
                             
                             Vec3 n = raySceneIntersection.rayMeshIntersection.normal;
@@ -420,6 +421,7 @@ public:
                                 color[2] = 0;
                             }
                         }
+                    }
                 }   
                     break;
                 default:
