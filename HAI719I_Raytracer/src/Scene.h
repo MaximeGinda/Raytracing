@@ -101,7 +101,7 @@ public:
             if (raySquare.intersectionExists && squares[i].material.type != Material_Glass) return raySquare.t;
         }
 
-        return Vec3(0,0,0);
+        return FLT_MAX;
     }
 
     // renvoie un float de l'intersection la plus proche
@@ -130,7 +130,8 @@ public:
             if (raySquare.intersectionExists && squares[i].material.type != Material_Glass) return squares[i].material.diffuse_material;
         }
 
-        return FLT_MAX;
+        
+        return Vec3(0,0,0);
     }
 
     float calculateCoef(int l_num, int echant, Vec3 intersect)
