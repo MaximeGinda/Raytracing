@@ -512,7 +512,7 @@ public:
             s.material.imageRGB = imageRGB;
         }
 
-        ppmLoader::load_ppm(imageRGB,"s2.ppm");
+        ppmLoader::load_ppm(imageRGB,(std::string)"s2.ppm");
     }
 
     void setup_single_mesh()
