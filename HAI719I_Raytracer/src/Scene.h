@@ -101,7 +101,7 @@ public:
             if (raySquare.intersectionExists && squares[i].material.type != Material_Glass) return raySquare.t;
         }
 
-        return FLT_MAX;
+        return Vec3(0,0,0);
     }
 
     // renvoie un float de l'intersection la plus proche
@@ -174,8 +174,8 @@ public:
         // Calcul de la distance de l'objet à la distance de mise au point
         float distance_to_focus = abs(result.t - focus_distance);
 
-        pasX = (float)(rand() / (float)(RAND_MAX / (blur_radius)));
-        pasZ = (float)(rand() / (float)(RAND_MAX / (blur_radius)));
+        float pasX = (float)(rand() / (float)(RAND_MAX / (blur_radius)));
+        float pasZ = (float)(rand() / (float)(RAND_MAX / (blur_radius)));
         Vec3 Dvec = Vec3(pasX, 0, pasZ) - intersect;
         Dvec.normalize();
 
