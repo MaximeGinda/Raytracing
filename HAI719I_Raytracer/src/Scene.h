@@ -286,8 +286,8 @@ public:
                             }
                         }
                         else if(spheres[raySceneIntersection.objectIndex].material.type == texture){
-                            ppmLoader::ImageRGB imageRGB;
-                            ppmLoader::load_ppm(imageRGB, spheres[raySceneIntersection.objectIndex].material.textureName);
+                            
+                            
                         }
                         
                         inter = raySceneIntersection.raySphereIntersection.intersection;
@@ -490,6 +490,7 @@ public:
         spheres.clear();
         squares.clear();
         lights.clear();
+        ppmLoader::ImageRGB imageRGB;
 
         {
             lights.resize( lights.size() + 1 );
@@ -508,8 +509,10 @@ public:
             s.m_radius = 1.f;
             s.build_arrays();
             s.material.type = texture;
-            s.material.textureName = "s2.ppm";
+            s.material.imageRGB = imageRGB;
         }
+
+        ppmLoader::load_ppm(imageRGB,"s2.ppm");
     }
 
     void setup_single_mesh()

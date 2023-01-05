@@ -26,7 +26,7 @@ struct Material {
     float index_medium;
     float transparency;
 
-    std::string textureName;
+    ppmLoader::ImageRGB imageRGB;
 
     MaterialType type;
 
