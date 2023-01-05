@@ -104,6 +104,35 @@ public:
         return FLT_MAX;
     }
 
+    // renvoie un float de l'intersection la plus proche
+    Vec3 searchFirstIntersectionForBlur(Ray const &ray)
+    {
+
+        size_t meshesSize = meshes.size();
+        for (size_t i = 0; i < meshesSize; i++)
+        {
+            // RayTriangleIntersection rayMesh = meshes[i].intersect(ray);
+            // if (rayMesh.intersectionExists) return rayMesh.t;
+        }
+
+        size_t spheresSize = spheres.size();
+        for (size_t i = 0; i < spheresSize; i++)
+        {
+            RaySphereIntersection raySphere = spheres[i].intersect(ray);
+            if (raySphere.intersectionExists && spheres[i].material.type != Material_Glass) return raySphere.material.diffuse_material;
+            // if (raySphere.intersectionExists) return raySphere.t;
+        }
+
+        size_t squaresSize = squares.size();
+        for (size_t i = 0; i < squaresSize; i++)
+        {
+            RaySquareIntersection raySquare = squares[i].intersect(ray);
+            if (raySquare.intersectionExists && squares[i].material.type != Material_Glass) return raySquare.material.diffuse_material;
+        }
+
+        return FLT_MAX;
+    }
+
     float calculateCoef(int l_num, int echant, Vec3 intersect)
     {
         int nb_ombre = 0;
@@ -150,7 +179,9 @@ public:
         Vec3 Dvec = Vec3(pasX, 0, pasZ) - intersect;
         Dvec.normalize();
 
-        Vec3 flou = Ray(intersect, Dvec);
+        Ray rflou = Ray(intersect, Dvec);
+
+        Vec3 flou = searchFirstIntersectionForBlur(rflou);
         
 
         // Ajout de flou au pixel si nécessaire
@@ -158,7 +189,7 @@ public:
             float blur_amount = (blur_radius - distance_to_focus) / blur_radius;
 
             for(int i = 0; i < 3; i++)
-                color[i] = ((color[i] * (1.0 - blur_amount) + blur_amount * blur_color[i]) + flou) / 2;
+                color[i] = ((color[i] * (1.0 - blur_amount) + blur_amount * blur_color[i]) + flou[i]) / 2;
         }
 
         return color;
