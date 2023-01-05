@@ -181,9 +181,8 @@ public:
             Vec3 flou;
 
             for(int i = 0; i < 10; i++){
-                float pasX = (float)(rand() / (float)(RAND_MAX / (10000)));
-                float pasZ = (float)(rand() / (float)(RAND_MAX / (10000)));
-                Vec3 Dvec = Vec3(pasX, 0, pasZ) - intersect;
+            
+                Vec3 Dvec = Vec3(1, 0, 1) - intersect;
                 Dvec.normalize();
 
                 Ray rflou = Ray(intersect, Dvec);
