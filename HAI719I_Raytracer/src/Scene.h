@@ -33,6 +33,7 @@ struct Light {
 
 };
 
+
 struct RaySceneIntersection{
     bool intersectionExists;
     unsigned int typeOfIntersectedObject;
@@ -132,6 +133,24 @@ public:
         return (float)nb_ombre / echant; 
     }
 
+    Vec3 deapthOfField(RaySceneIntersection result, Vec3 color){
+
+        // Calcul de la distance de mise au point et du rayon de confusion
+        float focus_distance = 3.0; // distance de mise au point en mètres
+        float aperture_size = 2.0; // taille de l'ouverture en millimètres
+        float blur_radius = (1.0 / aperture_size) * focus_distance; // rayon de confusion en mètres
+
+        // Calcul de la distance de l'objet à la distance de mise au point
+        float distance_to_focus = abs(RaySceneIntersection.t - focus_distance);
+        
+        // Ajout de flou au pixel si nécessaire
+        if (distance_to_focus < blur_radius) {
+            float blur_amount = (blur_radius - distance_to_focus) / blur_radius;
+            color = color * (1.0 - blur_amount) + blur_amount;
+        }
+
+        return color;
+    }
 
     RaySceneIntersection computeIntersection(Ray const & ray, float znear) {
         RaySceneIntersection result;
@@ -184,7 +203,6 @@ public:
                 }
             }
         }                
-
         return result;
     }
 
@@ -449,6 +467,9 @@ public:
             color *= 1 - coeff;
         }
 
+        // Deapth of field
+        color = deapthOfField(raySceneIntersection, color);
+
         return color;
     }
 
@@ -512,7 +533,7 @@ public:
             s.material.imageRGB = imageRGB;
         }
 
-        ppmLoader::load_ppm(imageRGB,"s2.ppm");
+        // ppmLoader::load_ppm(imageRGB,"s2.ppm");
     }
 
     void setup_single_mesh()

@@ -203,6 +203,7 @@ void ray_trace_from_camera() {
 }
 
 
+
 void key (unsigned char keyPressed, int x, int y) {
     Vec3 pos , dir;
     switch (keyPressed) {
