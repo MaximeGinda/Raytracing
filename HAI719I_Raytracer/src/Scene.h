@@ -508,7 +508,7 @@ public:
             s.m_radius = 1.f;
             s.build_arrays();
             s.material.type = texture;
-            s.material.textureName = "s1.ppm";
+            s.material.textureName = "s2.ppm";
         }
     }
 
