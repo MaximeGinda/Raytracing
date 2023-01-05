@@ -4,13 +4,15 @@
 #include "imageLoader.h"
 #include "Vec3.h"
 #include <cmath>
+#include <string>
 
 #include <GL/glut.h>
 
 enum MaterialType {
     Material_Diffuse_Blinn_Phong ,
     Material_Glass,
-    Material_Mirror
+    Material_Mirror,
+    texture
 };
 
 
@@ -22,6 +24,8 @@ struct Material {
 
     float index_medium;
     float transparency;
+
+    string textureName;
 
     MaterialType type;
 

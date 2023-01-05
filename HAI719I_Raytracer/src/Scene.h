@@ -285,6 +285,10 @@ public:
                                 color = rayTraceRecursive(newRay, NRemainingBounces-1,0.000001f);
                             }
                         }
+                        else if(spheres[raySceneIntersection.objectIndex].material.type == texture){
+                            ppmLoader::ImageRGB imageRGB;
+                            ppmLoader::loadppm(imageRGB, Spheres[raySceneIntersection.objectIndex].material.textureName);
+                        }
                         
                         inter = raySceneIntersection.raySphereIntersection.intersection;
                     }
@@ -478,6 +482,33 @@ public:
             s.material.diffuse_material = Vec3( 1.,0.,0. );
             s.material.specular_material = Vec3( 0.2,0.2,0.2 );
             s.material.shininess = 20;
+        }
+    }
+
+    void setup_single_sphere_text() {
+        meshes.clear();
+        spheres.clear();
+        squares.clear();
+        lights.clear();
+
+        {
+            lights.resize( lights.size() + 1 );
+            Light & light = lights[lights.size() - 1];
+            light.pos = Vec3(-5,5,5);
+            light.radius = 2.5f;
+            light.powerCorrection = 2.f;
+            light.type = LightType_Spherical;
+            light.material = Vec3(1,1,1);
+            light.isInCamSpace = false;
+        }
+        {
+            spheres.resize( spheres.size() + 1 );
+            Sphere & s = spheres[spheres.size() - 1];
+            s.m_center = Vec3(0. , 0. , 0.);
+            s.m_radius = 1.f;
+            s.build_arrays();
+            s.material.type = texture;
+            s.material.textureName = "../img/sphereTextures/s1.ppm";
         }
     }
 
