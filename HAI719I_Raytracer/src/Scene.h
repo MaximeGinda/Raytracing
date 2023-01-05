@@ -133,7 +133,7 @@ public:
         return (float)nb_ombre / echant; 
     }
 
-    Vec3 deapthOfField(RaySceneIntersection result, Vec3 color){
+    Vec3 deapthOfField(RaySceneIntersection result, Vec3 color, Vec3 intersect){
 
         // Calcul de la distance de mise au point et du rayon de confusion
         float focus_distance = 3; // distance de mise au point en mètres
@@ -144,13 +144,21 @@ public:
 
         // Calcul de la distance de l'objet à la distance de mise au point
         float distance_to_focus = abs(result.t - focus_distance);
+
+        pasX = (float)(rand() / (float)(RAND_MAX / (blur_radius)));
+        pasZ = (float)(rand() / (float)(RAND_MAX / (blur_radius)));
+        Vec3 Dvec = Vec3(pasX, 0, pasZ) - intersect;
+        Dvec.normalize();
+
+        Vec3 flou = Ray(intersect, Dvec);
         
+
         // Ajout de flou au pixel si nécessaire
         if (distance_to_focus < blur_radius) {
             float blur_amount = (blur_radius - distance_to_focus) / blur_radius;
 
             for(int i = 0; i < 3; i++)
-                color[i] = color[i] * (1.0 - blur_amount) + blur_amount * blur_color[i];
+                color[i] = ((color[i] * (1.0 - blur_amount) + blur_amount * blur_color[i]) + flou) / 2;
         }
 
         return color;
@@ -472,7 +480,7 @@ public:
         }
 
         // Deapth of field
-        color = deapthOfField(raySceneIntersection, color);
+        color = deapthOfField(raySceneIntersection, color, inter);
 
         return color;
     }
