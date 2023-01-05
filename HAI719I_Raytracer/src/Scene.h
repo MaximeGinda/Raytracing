@@ -190,7 +190,7 @@ public:
                 flou += searchFirstIntersectionForBlur(rflou);  
             }
 
-            flou /= 10;
+            flou /= 100;
 
             float blur_amount = (blur_radius - distance_to_focus) / blur_radius;
 
