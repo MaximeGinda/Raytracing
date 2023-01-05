@@ -195,7 +195,8 @@ public:
             float blur_amount = (blur_radius - distance_to_focus) / blur_radius;
 
             for(int i = 0; i < 3; i++)
-                color[i] = ((color[i] * (1.0 - blur_amount) + blur_amount * blur_color[i]) + flou[i]) / 2;
+                //color[i] = ((color[i] * (1.0 - blur_amount) + blur_amount * blur_color[i]) + flou[i]) / 2;
+                color[i] = (color[i] + flou[i])/2;
         }
 
         return color;
