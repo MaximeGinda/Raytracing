@@ -119,7 +119,7 @@ public:
         for (size_t i = 0; i < spheresSize; i++)
         {
             RaySphereIntersection raySphere = spheres[i].intersect(ray);
-            if (raySphere.intersectionExists && spheres[i].material.type != Material_Glass) return raySphere.material.diffuse_material;
+            if (raySphere.intersectionExists && spheres[i].material.type != Material_Glass) return spheres[i].material.diffuse_material;
             // if (raySphere.intersectionExists) return raySphere.t;
         }
 
@@ -127,7 +127,7 @@ public:
         for (size_t i = 0; i < squaresSize; i++)
         {
             RaySquareIntersection raySquare = squares[i].intersect(ray);
-            if (raySquare.intersectionExists && squares[i].material.type != Material_Glass) return raySquare.material.diffuse_material;
+            if (raySquare.intersectionExists && squares[i].material.type != Material_Glass) return squares[i].material.diffuse_material;
         }
 
         return FLT_MAX;
