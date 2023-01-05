@@ -182,7 +182,7 @@ public:
 
             for(int i = -50; i < 50; i++){
             
-                Vec3 Dvec = Vec3(i, i, i) - intersect;
+                Vec3 Dvec = Vec3(i, 0, i) - intersect;
                 Dvec.normalize();
 
                 Ray rflou = Ray(intersect, Dvec);
