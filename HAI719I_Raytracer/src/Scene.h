@@ -141,7 +141,7 @@ public:
         float blur_radius = (1.0 / aperture_size) * focus_distance; // rayon de confusion en mètres
 
         // Calcul de la distance de l'objet à la distance de mise au point
-        float distance_to_focus = abs(RaySceneIntersection.t - focus_distance);
+        float distance_to_focus = abs(result.t - focus_distance);
         
         // Ajout de flou au pixel si nécessaire
         if (distance_to_focus < blur_radius) {
