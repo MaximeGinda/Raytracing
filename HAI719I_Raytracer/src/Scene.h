@@ -136,9 +136,11 @@ public:
     Vec3 deapthOfField(RaySceneIntersection result, Vec3 color){
 
         // Calcul de la distance de mise au point et du rayon de confusion
-        float focus_distance = 1.0; // distance de mise au point en mètres
+        float focus_distance = 5.0; // distance de mise au point en mètres
         float aperture_size = 1.0; // taille de l'ouverture en millimètres
         float blur_radius = (1.0 / aperture_size) * focus_distance; // rayon de confusion en mètres
+
+        Vec3 blur_color = Vec3(1.,1.,1.) ;
 
         // Calcul de la distance de l'objet à la distance de mise au point
         float distance_to_focus = abs(result.t - focus_distance);
@@ -148,7 +150,7 @@ public:
             float blur_amount = (blur_radius - distance_to_focus) / blur_radius;
 
             for(int i = 0; i < 3; i++)
-                color[i] = color[i] * (1.0 - blur_amount) + blur_amount;
+                color[i] = color[i] * (1.0 - blur_amount) + blur_amount * blur color;
         }
 
         return color;
