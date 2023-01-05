@@ -180,7 +180,7 @@ public:
             
             Vec3 flou;
 
-            for(int i = 0; i < 10; i++){
+            for(int i = -50; i < 50; i++){
             
                 Vec3 Dvec = Vec3(i, i, i) - intersect;
                 Dvec.normalize();
