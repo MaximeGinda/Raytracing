@@ -6,6 +6,7 @@
 #include <cmath>
 #include <string>
 
+
 #include <GL/glut.h>
 
 enum MaterialType {
@@ -25,7 +26,7 @@ struct Material {
     float index_medium;
     float transparency;
 
-    string textureName;
+    std::string textureName;
 
     MaterialType type;
 
