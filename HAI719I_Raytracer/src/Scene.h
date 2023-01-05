@@ -146,7 +146,9 @@ public:
         // Ajout de flou au pixel si nécessaire
         if (distance_to_focus < blur_radius) {
             float blur_amount = (blur_radius - distance_to_focus) / blur_radius;
-            color = color * (1.0 - blur_amount) + blur_amount;
+
+            for(int i = 0; i < 3; i++)
+                color[i] = color[i] * (1.0 - blur_amount) + blur_amount;
         }
 
         return color;
