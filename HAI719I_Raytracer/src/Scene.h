@@ -180,9 +180,9 @@ public:
             
             Vec3 flou;
 
-            for(int i = 0; i < 5; i++){
-                float pasX = (float)(rand() / (float)(RAND_MAX / (1000)));
-                float pasZ = (float)(rand() / (float)(RAND_MAX / (1000)));
+            for(int i = 0; i < 10; i++){
+                float pasX = (float)(rand() / (float)(RAND_MAX / (10000)));
+                float pasZ = (float)(rand() / (float)(RAND_MAX / (10000)));
                 Vec3 Dvec = Vec3(pasX, 0, pasZ) - intersect;
                 Dvec.normalize();
 
@@ -191,7 +191,7 @@ public:
                 flou += searchFirstIntersectionForBlur(rflou);  
             }
 
-            flou /= 5;
+            flou /= 10;
 
             float blur_amount = (blur_radius - distance_to_focus) / blur_radius;
 
