@@ -287,7 +287,7 @@ public:
                         }
                         else if(spheres[raySceneIntersection.objectIndex].material.type == texture){
                             ppmLoader::ImageRGB imageRGB;
-                            ppmLoader::load_ppm(imageRGB, Spheres[raySceneIntersection.objectIndex].material.textureName);
+                            ppmLoader::load_ppm(imageRGB, spheres[raySceneIntersection.objectIndex].material.textureName);
                         }
                         
                         inter = raySceneIntersection.raySphereIntersection.intersection;
