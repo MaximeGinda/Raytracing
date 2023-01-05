@@ -175,18 +175,24 @@ public:
         // Calcul de la distance de l'objet à la distance de mise au point
         float distance_to_focus = abs(result.t - focus_distance);
 
-        float pasX = (float)(rand() / (float)(RAND_MAX / (blur_radius)));
-        float pasZ = (float)(rand() / (float)(RAND_MAX / (blur_radius)));
-        Vec3 Dvec = Vec3(pasX, 0, pasZ) - intersect;
-        Dvec.normalize();
-
-        Ray rflou = Ray(intersect, Dvec);
-
-        Vec3 flou = searchFirstIntersectionForBlur(rflou);
-        
-
         // Ajout de flou au pixel si nécessaire
         if (distance_to_focus < blur_radius) {
+            
+            Vec3 flou;
+
+            for(int i = 0; i < 5; i++){
+                float pasX = (float)(rand() / (float)(RAND_MAX / (1000)));
+                float pasZ = (float)(rand() / (float)(RAND_MAX / (1000)));
+                Vec3 Dvec = Vec3(pasX, 0, pasZ) - intersect;
+                Dvec.normalize();
+
+                Ray rflou = Ray(intersect, Dvec);
+
+                flou += searchFirstIntersectionForBlur(rflou);  
+            }
+
+            flou /= 5;
+
             float blur_amount = (blur_radius - distance_to_focus) / blur_radius;
 
             for(int i = 0; i < 3; i++)
