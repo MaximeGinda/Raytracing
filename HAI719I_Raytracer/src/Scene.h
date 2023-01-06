@@ -137,10 +137,10 @@ public:
 
         // Calcul de la distance de mise au point et du rayon de confusion
         float focus_distance = 3.5; // distance de mise au point en mètres
-        float aperture_size = 0.4; // taille de l'ouverture en millimètres
+        float aperture_size = 0.5; // taille de l'ouverture en millimètres
         float blur_radius = (1.0 / aperture_size) * focus_distance; // rayon de confusion en mètres
 
-        Vec3 blur_color = Vec3(0.9,0.9,0.9) ;
+        Vec3 blur_color = Vec3(0.5,0.5,0.5) ;
 
         // Calcul de la distance de l'objet à la distance de mise au point
         float distance_to_focus = abs(result.t - focus_distance);
