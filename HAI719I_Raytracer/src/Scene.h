@@ -147,7 +147,7 @@ public:
         float distance_to_blur = 4;
 
         // Ajout de flou au pixel si nécessaire
-        if (distance_to_focus < blur_radius && distance_to_blur < result.t) {
+        if (distance_to_blur < result.t) {
 
             float blur_amount = (blur_radius - distance_to_focus) / blur_radius;
 
