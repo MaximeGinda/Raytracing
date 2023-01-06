@@ -140,7 +140,7 @@ public:
         float aperture_size = 0.5; // taille de l'ouverture en millimètres
         float blur_radius = (1.0 / aperture_size) * focus_distance; // rayon de confusion en mètres
 
-        Vec3 blur_color = Vec3(0.,0.,0.) ;
+        Vec3 blur_color = Vec3(0.1,0.1,0.1) ;
 
         // Calcul de la distance de l'objet à la distance de mise au point
         float distance_to_focus = abs(result.t - focus_distance);
@@ -151,7 +151,7 @@ public:
             float blur_amount = (blur_radius - distance_to_focus) / blur_radius;
 
             for(int i = 0; i < 3; i++)
-                color[i] = (color[i] * (1.0 - blur_amount));
+                color[i] = (color[i] * (1.0 - blur_amount)) + blur_amount * blur_color[i];;
         }
 
         return color;
