@@ -2,9 +2,12 @@
 #define BOUNDINGBOX_H
 
 class BoundingBox {
-    public:
+
+    private:
         std::array<float, 3> min;
         std::array<float, 3> max;
+
+    public:
 
         BoundingBox() : min({0, 0, 0}), max({0, 0, 0}) {}
 
