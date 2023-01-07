@@ -520,7 +520,7 @@ public:
             {
                 Vec3 newDir = newDir.nRandom(rayStart.direction());
                 Ray newRay = Ray(rayStart.origin(), newDir);
-                colorB += rayTraceRecursive(newRay, 5, znear);
+                colorB += rayTraceRecursive(newRay, 1, znear);
             }
 
             color += colorB;
