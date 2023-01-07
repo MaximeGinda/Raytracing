@@ -78,8 +78,8 @@ struct BoundingBox {
         float tmax = std::numeric_limits<float>::max();
 
         for (int i = 0; i < 3; i++) {
-            float t1 = (min[i] - ray.origin[i]) / ray.direction[i];
-            float t2 = (max[i] - ray.origin[i]) / ray.direction[i];
+            float t1 = (min[i] - ray.origin()[i]) / ray.direction()[i];
+            float t2 = (max[i] - ray.origin()[i]) / ray.direction()[i];
 
             if (t1 > t2) std::swap(t1, t2);
 
