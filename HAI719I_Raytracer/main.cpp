@@ -326,7 +326,7 @@ int main (int argc, char ** argv) {
     scenes[1].setup_single_square();
     scenes[2].setup_cornell_box();
     scenes[3].setup_single_mesh();
-    scenes[4].setup_single_sphere_text();
+    scenes[4].setup_cornell_box_dof();
 
     glutMainLoop ();
     return EXIT_SUCCESS;

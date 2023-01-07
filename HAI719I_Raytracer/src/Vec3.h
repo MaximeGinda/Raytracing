@@ -84,6 +84,28 @@ public:
         res[c2] = -mVals[c1];
         return res;
     }
+    Vec3 nRandom(Vec3 const & other)
+    {
+        Vec3 res(other[0],other[1],other[2]);
+
+        int randMax = 11;
+        float randMult = 0.0015;
+
+        if((rand()%2+1) == 2)
+            res[0] += (rand() % randMax * randMult);
+        else
+            res[0] += (rand() % randMax * randMult);
+        if((rand()%2+1) == 2)
+            res[1] += (rand() % randMax * randMult);
+        else
+            res[1] += (rand() % randMax * randMult);
+        if((rand()%2+1) == 2)
+            res[2] += (rand() % randMax * randMult);
+        else
+            res[2] += (rand() % randMax * randMult);
+
+        return res;
+    }
 };
 
 static inline Vec3 operator + (Vec3 const & a , Vec3 const & b) {

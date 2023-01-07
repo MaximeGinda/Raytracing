@@ -55,6 +55,14 @@ class Scene {
 
     std::vector< BoundingBox > box;
 
+    // Deapth of field
+    float focus_distance = 0; // distance de mise au point en mètres
+    float aperture_size = 0; // taille de l'ouverture en millimètres
+    float maxClarity = 0; //permet de contrôler la distance maximale qui est focus
+    
+    bool dof = false; // active ou desactive la profondeur de champs
+    bool BackDof = false; // active ou desactive le flou d'arriere plan
+
 public:
 
 
@@ -139,30 +147,6 @@ public:
         }
 
         return (float)nb_ombre / echant; 
-    }
-
-    Vec3 deapthOfField(RaySceneIntersection result, Vec3 color, Vec3 intersect){
-
-        // Calcul de la distance de mise au point et du rayon de confusion
-        float focus_distance = 4; // distance de mise au point en mètres
-        float aperture_size = 1; // taille de l'ouverture en millimètres
-        float blur_radius = (1.0 / aperture_size) * focus_distance; // rayon de confusion en mètres
-
-        Vec3 blur_color = Vec3(0.3,0.3,0.3) ;
-
-        // Calcul de la distance de l'objet à la distance de mise au point
-        float distance_to_focus = abs(result.t - focus_distance);
-
-        // Ajout de flou au pixel si nécessaire
-        if (distance_to_focus < blur_radius) {
-
-            float blur_amount = (blur_radius - distance_to_focus) / blur_radius;
-
-            for(int i = 0; i < 3; i++)
-                color[i] = (color[i] * (1.0 - blur_amount)) + blur_amount * blur_color[i];
-        }
-
-        return color;
     }
 
     RaySceneIntersection computeIntersection(Ray const & ray, float znear) {
@@ -485,14 +469,75 @@ public:
             color *= 1 - coeff;
         }
 
-        // Deapth of field
-        // color = deapthOfField(raySceneIntersection, color, inter);
-
         return color;
     }
 
-    Vec3 rayTrace( Ray const & rayStart ) {
-        return rayTraceRecursive(rayStart, 5, 4.9f);
+    float rayTraceDof(Ray ray, float znear, float zfar ) {
+
+        RaySceneIntersection raySceneIntersection = computeIntersection(ray, znear, zfar);
+
+        float resultT;
+
+        if(raySceneIntersection.intersectionExists)
+        {
+            switch (raySceneIntersection.typeOfIntersectedObject){  
+                case 0:{
+                    objectIntersect = raySceneIntersection.rayMeshIntersection.t;
+                    break;
+                }
+                case 1:{
+                    objectIntersect = raySceneIntersection.raySphereIntersection.t;
+                    break;
+                }
+                case 2:{
+                    objectIntersect = raySceneIntersection.raySquareIntersection.t;
+                    break;
+                }
+                default:{
+                    break;
+                }
+            }
+        }   
+
+        return resultT;
+    }
+
+    Vec3 deapthOfField(Ray const & rayStart, float znear, float zfar){
+        Vec3 color = rayTraceRecursive(rayStart, 5, znear, zfar);
+
+        float blur_radius = (1.0 / aperture_size) * focus_distance; // rayon de confusion en mètres
+
+        float resultT = rayTraceDof(rayStart, 5, znear, zfar);
+
+        float distance_to_focus = abs(resultT - focus_distance);
+        float o_distance_to_focus = abs(resultT + focus_distance);
+
+        if (distance_to_focus < blur_radius || (BackDof && o_distance_to_focus > blur_radius + maxClarity)){
+            Vec3 colorB = Vec3(0.,0.,0.);
+                
+            // Calcul du nouveau rayon
+            for(size_t i = 0; i < 8; i++)
+            {
+                Vec3 newDir = newDir.nRandom(rayStart.direction());
+                Ray newRay = Ray(rayStart.origin(), newDir);
+                colorB += rayTraceRecursive(newRay, 5, znear, zfar);
+            }
+
+            color += colorB;
+
+            // On fait la moyenne pour le flou moyenneur
+            color /= 9;
+        }
+    }
+
+    Vec3 rayTrace( Ray const & rayStart, float znear, float zfar) {
+        Vec3 color;
+
+        // Si la profondeur de champs est activé
+        if(dof) color = deapthOfField(rayStart, znear, zfar);
+        else color = rayTraceRecursive(rayStart, 5, znear, zfar);
+
+        return color;
     }
 
     void setup_single_sphere() {
@@ -524,79 +569,146 @@ public:
         }
     }
 
-    void setup_single_sphere_text() {
+    void setup_cornell_box_dof()
+    {
         meshes.clear();
         spheres.clear();
         squares.clear();
         lights.clear();
-        ppmLoader::ImageRGB imageRGB;
+
+        dof = true;
+        BackDof = true;
+
+        focus_distance = 3;
+        aperture_size = 1;
+        maxClarity = 7.5;
 
         {
             lights.resize( lights.size() + 1 );
             Light & light = lights[lights.size() - 1];
-            light.pos = Vec3(-5,5,5);
+            light.pos = Vec3( 0.0, 1.5, 0.0 );
             light.radius = 2.5f;
             light.powerCorrection = 2.f;
             light.type = LightType_Spherical;
             light.material = Vec3(1,1,1);
             light.isInCamSpace = false;
         }
-        {
-            spheres.resize( spheres.size() + 1 );
-            Sphere & s = spheres[spheres.size() - 1];
-            s.m_center = Vec3(0. , 0. , 0.);
-            s.m_radius = 1.f;
+
+        { //Back Wall
+            squares.resize( squares.size() + 1 );
+            Square & s = squares[squares.size() - 1];
+            s.setQuad(Vec3(-1., -1., 0.), Vec3(1., 0, 0.), Vec3(0., 1, 0.), 2., 2.);
+            s.scale(Vec3(2., 2., 1.));
+            s.translate(Vec3(0., 0., -2.));
             s.build_arrays();
-            s.material.type = texture;
-            s.material.imageRGB = imageRGB;
+            s.material.type = Material_Diffuse_Blinn_Phong;
+            s.material.diffuse_material = Vec3( 0.,0.,1. );
+            s.material.specular_material = Vec3( 1.,1.,1. );
+            s.material.shininess = 16;
         }
 
-        // ppmLoader::load_ppm(imageRGB,"s2.ppm");
+        { //Left Wall
+
+            squares.resize( squares.size() + 1 );
+            Square & s = squares[squares.size() - 1];
+            s.setQuad(Vec3(-1., -1., 0.), Vec3(1., 0, 0.), Vec3(0., 1, 0.), 2., 2.);
+            s.scale(Vec3(2., 2., 1.));
+            s.translate(Vec3(0., 0., -2.));
+            s.rotate_y(90);
+            s.build_arrays();
+            s.material.type = Material_Diffuse_Blinn_Phong;
+            s.material.diffuse_material = Vec3( 1.,0.,0. );
+            s.material.specular_material = Vec3( 1.,0.,0. );
+            s.material.shininess = 16;
+        }
+
+        { //Right Wall
+            squares.resize( squares.size() + 1 );
+            Square & s = squares[squares.size() - 1];
+            s.setQuad(Vec3(-1., -1., 0.), Vec3(1., 0, 0.), Vec3(0., 1, 0.), 2., 2.);
+            s.translate(Vec3(0., 0., -2.));
+            s.scale(Vec3(2., 2., 1.));
+            s.rotate_y(-90);
+            s.build_arrays();
+            s.material.type = Material_Diffuse_Blinn_Phong;
+            s.material.diffuse_material = Vec3( 0.0,1.0,0.0 );
+            s.material.specular_material = Vec3( 0.0,1.0,0.0 );
+            s.material.shininess = 16;
+        }
+
+        { //Floor
+            squares.resize( squares.size() + 1 );
+            Square & s = squares[squares.size() - 1];
+            s.setQuad(Vec3(-1., -1., 0.), Vec3(1., 0, 0.), Vec3(0., 1, 0.), 2., 2.);
+            s.translate(Vec3(0., 0., -2.));
+            s.scale(Vec3(2., 2., 1.));
+            s.rotate_x(-90);
+            s.build_arrays();
+            s.material.type = Material_Diffuse_Blinn_Phong;
+            s.material.diffuse_material = Vec3(1.,1.,.0 );
+            s.material.specular_material = Vec3( 1.0,1.0,1.0 );
+            s.material.shininess = 16;
+        }
+
+        { //Ceiling
+            squares.resize( squares.size() + 1 );
+            Square & s = squares[squares.size() - 1];
+            s.setQuad(Vec3(-1., -1., 0.), Vec3(1., 0, 0.), Vec3(0., 1, 0.), 2., 2.);
+            s.translate(Vec3(0., 0., -2.));
+            s.scale(Vec3(2., 2., 1.));
+            s.rotate_x(90);
+            s.build_arrays();
+            s.material.type = Material_Diffuse_Blinn_Phong;
+            s.material.diffuse_material = Vec3( 1.0,1.0,1.0 );
+            s.material.specular_material = Vec3( 1.0,1.0,1.0 );
+            s.material.shininess = 16;
+        }
+
+        { //Front Wall
+            squares.resize( squares.size() + 1 );
+            Square & s = squares[squares.size() - 1];
+            s.setQuad(Vec3(-1., -1., 0.), Vec3(1., 0, 0.), Vec3(0., 1, 0.), 2., 2.);
+            s.translate(Vec3(0., 0., -2.));
+            s.scale(Vec3(2., 2., 1.));
+            s.rotate_y(180);
+            s.build_arrays();
+            s.material.type = Material_Diffuse_Blinn_Phong;
+            s.material.diffuse_material = Vec3( 1.0,1.0,1.0 );
+            s.material.specular_material = Vec3( 1.0,1.0,1.0 );
+            s.material.shininess = 16;
+        }
+
+
+        { //GLASS Sphere
+
+            spheres.resize( spheres.size() + 1 );
+            Sphere & s = spheres[spheres.size() - 1];
+            s.m_center = Vec3(1.0, -1.25, 0.5);
+            s.m_radius = 0.75f;
+            s.build_arrays();
+            //s.material.type = Material_Glass;
+            s.material.diffuse_material = Vec3( 1.,0.,0. );
+            s.material.specular_material = Vec3( 1.,0.,0. );
+            s.material.shininess = 16;
+            s.material.transparency = 1.0;
+            s.material.index_medium = 1.4;
+        }
+
+
+        { //MIRRORED Sphere
+            spheres.resize( spheres.size() + 1 );
+            Sphere & s = spheres[spheres.size() - 1];
+            s.m_center = Vec3(-1.0, -1.25, -0.5);
+            s.m_radius = 0.75f;
+            s.build_arrays();
+            //s.material.type = Material_Mirror;
+            s.material.diffuse_material = Vec3( 1.,1.,1. );
+            s.material.specular_material = Vec3(  1.,1.,1. );
+            s.material.shininess = 16;
+            s.material.transparency = 0.;
+            s.material.index_medium = 0.;
+        }
     }
-
-    // void setup_single_mesh()
-    // {
-    //     meshes.clear();
-    //     spheres.clear();
-    //     squares.clear();
-    //     lights.clear();
-
-    //      {
-    //         lights.resize(lights.size() + 1);
-    //         Light &light = lights[lights.size() - 1];
-    //         light.pos = Vec3(0.0, 1.5, 0.0);
-    //         light.radius = 2.5f;
-    //         light.powerCorrection = 2.f;
-    //         light.type = LightType_Spherical;
-    //         light.material = Vec3(1, 1, 1);
-    //         light.isInCamSpace = false;
-    //     }   
-    //     {
-    //         meshes.resize(meshes.size() + 1);
-    //         Mesh &m = meshes[meshes.size() - 1];
-    //         m.loadOFF("data/suzanne.off");
-    //         m.centerAndScaleToUnit();
-    //         m.material.type = Material_Diffuse_Blinn_Phong;
-    //         m.material.diffuse_material = Vec3(1., 0., 0.);
-    //         m.material.specular_material = Vec3(1., 1., 1.);
-    //         m.material.shininess = 16;
-    //         m.build_arrays();
-    //     }
-
-    //     BoundingBox boxM;
-
-    //     Mesh &m = meshes[meshes.size() - 1];
-    //     std::pair<std::array<float, 3>, std::array<float, 3>> bounds = boxM.getBounds(m);
-    //     std::array<float, 3> min = bounds.first;
-    //     std::array<float, 3> max = bounds.second;
-
-    //     BoundingBox box1(min, max);
-    //     boxM.expand(box1);
-        
-        
-    //     box.push_back(boxM);
-    // }
-
 
     void setup_single_mesh()
     {
