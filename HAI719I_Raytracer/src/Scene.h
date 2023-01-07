@@ -158,7 +158,7 @@ public:
         }
 
         for( unsigned int It = 0 ; It < box.size(); ++It){
-            box[It].draw();
+            box[It].draw(box[It]);
         }
         
     }
