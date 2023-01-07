@@ -106,7 +106,7 @@ struct BoundingBox {
             4, 0, 3, 3, 7, 4
         };
 
-        glBegin(GL_TRIANGLES);
+        glBegin(GL_LINE_STRIP);
         for (unsigned int i : indices) {
             glVertex3d(vertices[3 * i], vertices[3 * i + 1], vertices[3 * i + 2]);
         }
@@ -144,6 +144,10 @@ public:
         for( unsigned int It = 0 ; It < meshes.size() ; ++It ) {
             Mesh const & mesh = meshes[It];
             mesh.draw();
+
+            BoundingBox box1({0.5, 1, 1.5}, {2, 2.5, 3});
+
+            box1.draw(box1);
         }
         for( unsigned int It = 0 ; It < spheres.size() ; ++It ) {
             Sphere const & sphere = spheres[It];
@@ -659,9 +663,7 @@ public:
             m.material.shininess = 16;
             m.build_arrays();
         }
-        BoundingBox box1({1, 2, 3}, {4, 5, 6});
-
-        box1.draw(box1);
+        
     }
 
 
