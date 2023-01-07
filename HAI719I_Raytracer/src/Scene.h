@@ -475,8 +475,8 @@ public:
     float rayTraceDof(Ray ray, float znear ) {
 
         RaySceneIntersection raySceneIntersection = computeIntersection(ray, znear);
-        float objectIntersect;
-
+        float objectIntersect = FLT_MAX;
+    
         if(raySceneIntersection.intersectionExists)
         {
             switch ( raySceneIntersection.typeOfIntersectedObject )
@@ -503,7 +503,7 @@ public:
             }
         }
 
-        
+        st
 
         return objectIntersect;
     }
