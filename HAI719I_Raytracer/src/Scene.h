@@ -154,9 +154,6 @@ public:
 
             BoundingBox box1(min, max);
             boxM.expand(box1);
-
-            box.push_back(boxM);
-            std::cout << It << std::endl;
             boxM.draw(boxM);
         }
         for( unsigned int It = 0 ; It < spheres.size() ; ++It ) {
@@ -167,6 +164,8 @@ public:
             Square const & square = squares[It];
             square.draw();
         }
+
+        box.push_back(boxM);
     }
 
     // renvoie un float de l'intersection la plus proche
