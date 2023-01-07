@@ -132,7 +132,7 @@ class Scene {
     std::vector< Square > squares;
     std::vector< Light > lights;
 
-    BoundingBox box;
+    std::vector< BoundingBox > box;
 
 public:
 
@@ -146,13 +146,17 @@ public:
             Mesh const & mesh = meshes[It];
             mesh.draw();
 
-            std::pair<std::array<float, 3>, std::array<float, 3>> bounds = box.getBounds(mesh);
+            BoundingBox boxM;
+            
+            std::pair<std::array<float, 3>, std::array<float, 3>> bounds = boxM.getBounds(mesh);
             std::array<float, 3> min = bounds.first;
             std::array<float, 3> max = bounds.second;
 
             BoundingBox box1(min, max);
-            box.expand(box1);
-            box.draw(box);
+            boxM.expand(box1);
+
+            box.push_back(boxM);
+            boxM.draw(boxM);
         }
         for( unsigned int It = 0 ; It < spheres.size() ; ++It ) {
             Sphere const & sphere = spheres[It];
@@ -251,21 +255,22 @@ public:
 
          //On regarde toutes les meshes
         size_t meshesSize = meshes.size();
-        
-        if(box.intersects(ray)) {
 
-            for (size_t i = 0; i < meshesSize; i++)
-            {
-        
-                RayTriangleIntersection rmi = this->meshes[i].intersect(ray);
-                if (rmi.intersectionExists){
-                    // Est-ce que c'est le plus proche ?
-                    if (rmi.t > znear && rmi.t < result.t) {
-                        result.intersectionExists = rmi.intersectionExists;
-                        result.typeOfIntersectedObject = 0;
-                        result.objectIndex = i;
-                        result.t = rmi.t;
-                        result.rayMeshIntersection = rmi; 
+        for(size_t boxI = 0; boxI < box.size(); boxI++){
+            if(box[boxI].intersects(ray)) {
+                for (size_t i = 0; i < meshesSize; i++)
+                {
+            
+                    RayTriangleIntersection rmi = this->meshes[i].intersect(ray);
+                    if (rmi.intersectionExists){
+                        // Est-ce que c'est le plus proche ?
+                        if (rmi.t > znear && rmi.t < result.t) {
+                            result.intersectionExists = rmi.intersectionExists;
+                            result.typeOfIntersectedObject = 0;
+                            result.objectIndex = i;
+                            result.t = rmi.t;
+                            result.rayMeshIntersection = rmi; 
+                        }
                     }
                 }
             }
