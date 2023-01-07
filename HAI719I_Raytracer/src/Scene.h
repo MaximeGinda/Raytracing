@@ -514,13 +514,11 @@ public:
 
         if (distance_to_focus < blur_radius || (BackDof && o_distance_to_focus > blur_radius + maxClarity)){
             Vec3 colorB = Vec3(0.,0.,0.);
-            std::cout << "<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>" << std::endl;
-                
+
             // Calcul du nouveau rayon
             for(size_t i = 0; i < 8; i++)
             {
                 Vec3 newDir = newDir.nRandom(rayStart.direction());
-                std::cout << "test" << std::endl;
                 Ray newRay = Ray(rayStart.origin(), newDir);
                 colorB += rayTraceRecursive(newRay, 1, znear);
             }
@@ -528,7 +526,6 @@ public:
             color += colorB;
 
             // On fait la moyenne pour le flou moyenneur
-            std::cout << "!!!!!!!!!!!!!!!!!!!!!!!!!!" << std::endl;
             color /= 9;
         }
     }
