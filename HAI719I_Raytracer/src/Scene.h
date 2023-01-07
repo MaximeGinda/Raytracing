@@ -33,6 +33,86 @@ struct Light {
 
 };
 
+// struct Node {
+//     std::vector<double> point;
+//     KDNode *left;
+//     KDNode *right;
+
+//     KDNode(const std::vector<double> &pt) : point(pt), left(nullptr), right(nullptr) {}
+    
+// };
+
+// struct Tree {   
+//     Node *root;
+//     Tree() : root(nullptr) {}
+
+//     void insert(const std::vector<double> &point) {
+//         root = insert(root, point, 0);
+//     }
+
+//     Node* insert((Node *node, const std::vector<double> &point, int depth){
+//         if (node == nullptr) return new KDNode(point);
+
+//         int dim = depth % point.size();
+
+//         if (point[dim] < node->point[dim]) {
+//             node->left = insert(node->left, point, depth + 1);
+//         } else {
+//             node->right = insert(node->right, point, depth + 1);
+//         }
+
+//         return node;
+//     }
+// };
+
+struct BoundingBox {
+    std::array<double, 3> min;
+    std::array<double, 3> max;
+
+    BoundingBox() : min({0, 0, 0}), max({0, 0, 0}) {}
+
+    BoundingBox(const std::array<double, 3> &min, const std::array<double, 3> &max) : min(min), max(max) {}
+
+    bool intersects(const Ray &ray) const {
+        // Code de l'intersection de la bounding box et du rayon
+        // ...
+    }
+
+    void expand(const BoundingBox &other) {
+        for (int i = 0; i < 3; i++) {
+            min[i] = std::min(min[i], other.min[i]);
+            max[i] = std::max(max[i], other.max[i]);
+        }
+    }
+
+    void draw(const BoundingBox &box) {
+        std::array<double, 8> vertices = {
+            box.min[0], box.min[1], box.min[2],
+            box.max[0], box.min[1], box.min[2],
+            box.max[0], box.max[1], box.min[2],
+            box.min[0], box.max[1], box.min[2],
+            box.min[0], box.min[1], box.max[2],
+            box.max[0], box.min[1], box.max[2],
+            box.max[0], box.max[1], box.max[2],
+            box.min[0], box.max[1], box.max[2]
+        };
+
+        std::array<unsigned int, 36> indices = {
+            0, 1, 2, 2, 3, 0,
+            4, 5, 6, 6, 7, 4,
+            4, 5, 1, 1, 0, 4,
+            6, 7, 3, 3, 2, 6,
+            1, 5, 6, 6, 2, 1,
+            4, 0, 3, 3, 7, 4
+        };
+
+        glBegin(GL_TRIANGLES);
+        for (unsigned int i : indices) {
+            glVertex3d(vertices[3 * i], vertices[3 * i + 1], vertices[3 * i + 2]);
+        }
+        glEnd();
+    }
+};
 
 struct RaySceneIntersection{
     bool intersectionExists;
@@ -74,6 +154,16 @@ public:
             square.draw();
         }
     }
+
+    // Tree buildKDTree(std::vector<std::vector<double>> points) {
+    //     Tree tree;
+
+    //     for (const auto &point : points) {
+    //         tree.insert(point);
+    //     }
+
+    //     return tree;
+    // }
 
     // renvoie un float de l'intersection la plus proche
     float searchFirstIntersection(Ray const &ray)
@@ -569,6 +659,9 @@ public:
             m.material.shininess = 16;
             m.build_arrays();
         }
+        BoundingBox box1({1, 2, 3}, {4, 5, 6});
+
+        BoundingBox.draw();
     }
 
 
