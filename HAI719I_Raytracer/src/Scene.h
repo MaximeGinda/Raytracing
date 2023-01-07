@@ -535,7 +535,7 @@ public:
             color /= 9;
         }
 
-        
+        return color;    
     }
 
     Vec3 rayTrace( Ray const & rayStart) {
