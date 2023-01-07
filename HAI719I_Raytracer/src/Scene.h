@@ -474,7 +474,7 @@ public:
 
     float rayTraceDof(Ray ray, float znear, float zfar ) {
 
-        RaySceneIntersection raySceneIntersection = computeIntersection(ray, znear, zfar);
+        RaySceneIntersection raySceneIntersection = computeIntersection(ray, znear);
 
         float resultT;
 
