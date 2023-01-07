@@ -112,6 +112,22 @@ struct BoundingBox {
         }
         glEnd();
     }
+
+
+    std::pair<std::array<double, 3>, std::array<double, 3>> getBounds(const Mesh &mesh) {
+        std::array<double, 3> min = {std::numeric_limits<double>::max(), std::numeric_limits<double>::max(), std::numeric_limits<double>::max()};
+        std::array<double, 3> max = {std::numeric_limits<double>::lowest(), std::numeric_limits<double>::lowest(), std::numeric_limits<double>::lowest()};
+
+        for (unsigned int i : mesh.triangles_array) {
+            const MeshVertex &vertex = mesh.vertices[i];
+            for (int j = 0; j < 3; j++) {
+                min[j] = std::min(min[j], vertex.position[j]);
+                max[j] = std::max(max[j], vertex.position[j]);
+            }
+        }
+
+        return {min, max};
+    }
 };
 
 struct RaySceneIntersection{
@@ -145,8 +161,13 @@ public:
             Mesh const & mesh = meshes[It];
             mesh.draw();
 
-            BoundingBox box1({-1.5, -1., -0.5}, {0.5, 1., 1.5});
+            
 
+            std::pair<std::array<double, 3>, std::array<double, 3>> bounds = getBounds(mesh);
+            std::array<double, 3> min = bounds.first;
+            std::array<double, 3> max = bounds.second;
+
+            BoundingBox box1(min, max);
             box1.draw(box1);
         }
         for( unsigned int It = 0 ; It < spheres.size() ; ++It ) {
