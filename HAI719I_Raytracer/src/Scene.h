@@ -537,7 +537,7 @@ public:
         Vec3 color;
 
         // Si la profondeur de champs est activé
-        if(dof) color = deapthOfField(rayStart, 4,9);
+        if(dof) color = deapthOfField(rayStart, 4.9);
         else color = rayTraceRecursive(rayStart, 5, 4.9);
 
         return color;
