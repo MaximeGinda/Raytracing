@@ -475,7 +475,7 @@ public:
     float rayTraceDof(Ray ray, float znear ) {
 
         RaySceneIntersection raySceneIntersection = computeIntersection(ray, znear);
-        float objectIntersect = FLT_MAX;
+        float result = FLT_MAX;
     
         if(raySceneIntersection.intersectionExists)
         {
@@ -483,17 +483,17 @@ public:
             {  
                 case 0:
                 {
-                    objectIntersect = raySceneIntersection.rayMeshIntersection.t;
+                    result = raySceneIntersection.rayMeshIntersection.t;
                     break;
                 }
                 case 1:
                 {
-                    objectIntersect = raySceneIntersection.raySphereIntersection.t;
+                    result = raySceneIntersection.raySphereIntersection.t;
                     break;
                 }
                 case 2:
                 {
-                    objectIntersect = raySceneIntersection.raySquareIntersection.t;
+                    result = raySceneIntersection.raySquareIntersection.t;
                     break;
                 }
                 default:
@@ -504,7 +504,7 @@ public:
         }
 
         
-        return objectIntersect;
+        return result;
     }
 
     Vec3 deapthOfField(Ray const & rayStart, float znear){
@@ -514,11 +514,11 @@ public:
 
         float result = rayTraceDof(rayStart, znear);
         
-
         float distance_to_focus = abs(result - focus_distance);
-        float o_distance_to_focus = abs(result + focus_distance);
-        if (distance_to_focus < blur_radius || (BackDof && o_distance_to_focus > blur_radius + maxClarity)){
-            
+        float back_distance_to_focus = abs(result + focus_distance);
+
+        if (distance_to_focus < blur_radius || (BackDof && back_distance_to_focus > blur_radius + maxClarity)){
+
             Vec3 colorB = Vec3(0.,0.,0.);
 
             // Calcul du nouveau rayon
