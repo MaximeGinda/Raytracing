@@ -502,12 +502,12 @@ public:
         return resultT;
     }
 
-    Vec3 deapthOfField(Ray const & rayStart, float znear, float zfar){
-        Vec3 color = rayTraceRecursive(rayStart, 5, znear, zfar);
+    Vec3 deapthOfField(Ray const & rayStart, float znear){
+        Vec3 color = rayTraceRecursive(rayStart, 5, znear);
 
         float blur_radius = (1.0 / aperture_size) * focus_distance; // rayon de confusion en mètres
 
-        float resultT = rayTraceDof(rayStart, 5, znear, zfar);
+        float resultT = rayTraceDof(rayStart, 5, znear);
 
         float distance_to_focus = abs(resultT - focus_distance);
         float o_distance_to_focus = abs(resultT + focus_distance);
@@ -520,7 +520,7 @@ public:
             {
                 Vec3 newDir = newDir.nRandom(rayStart.direction());
                 Ray newRay = Ray(rayStart.origin(), newDir);
-                colorB += rayTraceRecursive(newRay, 5, znear, zfar);
+                colorB += rayTraceRecursive(newRay, 5, znear);
             }
 
             color += colorB;
@@ -530,12 +530,12 @@ public:
         }
     }
 
-    Vec3 rayTrace( Ray const & rayStart, float znear, float zfar) {
+    Vec3 rayTrace( Ray const & rayStart, float znear) {
         Vec3 color;
 
         // Si la profondeur de champs est activé
-        if(dof) color = deapthOfField(rayStart, znear, zfar);
-        else color = rayTraceRecursive(rayStart, 5, znear, zfar);
+        if(dof) color = deapthOfField(rayStart, znear);
+        else color = rayTraceRecursive(rayStart, 5, znear);
 
         return color;
     }

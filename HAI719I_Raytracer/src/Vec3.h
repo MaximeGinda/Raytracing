@@ -84,8 +84,9 @@ public:
         res[c2] = -mVals[c1];
         return res;
     }
-    Vec3 nRandom(Vec3 const & other)
-    {
+
+    Vec3 nRandom(Vec3 const & other){
+        
         Vec3 res(other[0],other[1],other[2]);
 
         int randMax = 11;
