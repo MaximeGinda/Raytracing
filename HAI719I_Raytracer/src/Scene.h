@@ -114,9 +114,9 @@ struct BoundingBox {
     }
 
 
-    std::pair<std::array<double, 3>, std::array<double, 3>> getBounds(const Mesh &mesh) {
-        std::array<double, 3> min = {std::numeric_limits<double>::max(), std::numeric_limits<double>::max(), std::numeric_limits<double>::max()};
-        std::array<double, 3> max = {std::numeric_limits<double>::lowest(), std::numeric_limits<double>::lowest(), std::numeric_limits<double>::lowest()};
+    std::pair<std::array<float, 3>, std::array<float, 3>> getBounds(const Mesh &mesh) {
+        std::array<float, 3> min = {std::numeric_limits<float>::max(), std::numeric_limits<float>::max(), std::numeric_limits<float>::max()};
+        std::array<float, 3> max = {std::numeric_limits<float>::lowest(), std::numeric_limits<float>::lowest(), std::numeric_limits<float>::lowest()};
 
         for (unsigned int i : mesh.triangles_array) {
             const MeshVertex &vertex = mesh.vertices[i];
