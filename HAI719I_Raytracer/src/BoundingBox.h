@@ -80,3 +80,5 @@ class BoundingBox {
             return {min, max};
         }
 };
+
+#endif
