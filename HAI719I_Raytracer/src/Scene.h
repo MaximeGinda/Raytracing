@@ -74,8 +74,22 @@ struct BoundingBox {
     BoundingBox(const std::array<float, 3> &min, const std::array<float, 3> &max) : min(min), max(max) {}
 
     bool intersects(const Ray &ray) const {
-        // Code de l'intersection de la bounding box et du rayon
-        // ...
+        float tmin = std::numeric_limits<float>::lowest();
+        float tmax = std::numeric_limits<float>::max();
+
+        for (int i = 0; i < 3; i++) {
+            float t1 = (min[i] - ray.origin[i]) / ray.direction[i];
+            float t2 = (max[i] - ray.origin[i]) / ray.direction[i];
+
+            if (t1 > t2) std::swap(t1, t2);
+
+            tmin = std::max(tmin, t1);
+            tmax = std::min(tmax, t2);
+
+            if (tmax < tmin) return false;
+        }
+
+        return true;
     }
 
     void expand(const BoundingBox &other) {
@@ -149,6 +163,8 @@ class Scene {
     std::vector< Square > squares;
     std::vector< Light > lights;
 
+    BoundingBox box;
+
 public:
 
 
@@ -161,8 +177,6 @@ public:
             Mesh const & mesh = meshes[It];
             mesh.draw();
 
-            
-            BoundingBox box;
             std::pair<std::array<float, 3>, std::array<float, 3>> bounds = box.getBounds(mesh);
             std::array<float, 3> min = bounds.first;
             std::array<float, 3> max = bounds.second;
@@ -278,8 +292,11 @@ public:
 
          //On regarde toutes les meshes
         size_t meshesSize = meshes.size();
+        if(box.intersects(ray)) 
+            std::cout<< "oui" << std::endl;
         for (size_t i = 0; i < meshesSize; i++)
         {
+    
             RayTriangleIntersection rmi = this->meshes[i].intersect(ray);
             if (rmi.intersectionExists){
                 // Est-ce que c'est le plus proche ?
