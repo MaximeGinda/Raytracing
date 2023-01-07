@@ -251,12 +251,10 @@ public:
          //On regarde toutes les meshes
         size_t meshesSize = meshes.size();
         size_t boxSize = box.size();
-        std::cout << boxSize << std::endl;
+
         for(size_t boxI = 0; boxI < boxSize; boxI++){
             if(box[boxI].intersects(ray)) {
-                for (size_t i = 0; i < meshesSize; i++)
-                {
-            
+                for (size_t i = 0; i < meshesSize; i++){
                     RayTriangleIntersection rmi = this->meshes[i].intersect(ray);
                     if (rmi.intersectionExists){
                         // Est-ce que c'est le plus proche ?
