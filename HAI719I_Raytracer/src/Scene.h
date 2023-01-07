@@ -507,10 +507,10 @@ public:
 
         float blur_radius = (1.0 / aperture_size) * focus_distance; // rayon de confusion en mètres
 
-        float resultT = rayTraceDof(rayStart, znear);
+        float result = rayTraceDof(rayStart, znear);
 
-        float distance_to_focus = abs(resultT - focus_distance);
-        float o_distance_to_focus = abs(resultT + focus_distance);
+        float distance_to_focus = abs(result - focus_distance);
+        float o_distance_to_focus = abs(result + focus_distance);
 
         if (distance_to_focus < blur_radius || (BackDof && o_distance_to_focus > blur_radius + maxClarity)){
             Vec3 colorB = Vec3(0.,0.,0.);
@@ -527,8 +527,6 @@ public:
             color += colorB;
             // On fait la moyenne pour le flou moyenneur
             color /= 9;
-
-            std::cout << "test" << std::endl;
         }
     }
 
