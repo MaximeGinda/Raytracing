@@ -498,7 +498,7 @@ public:
                 }
                 default:
                 {
-                            std::cout << maxClarity << " " << blur_radius << std::endl;
+                    std::cout << "test" << std::endl;
 
                     break;
                 }
