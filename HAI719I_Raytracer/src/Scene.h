@@ -661,7 +661,7 @@ public:
         }
         BoundingBox box1({1, 2, 3}, {4, 5, 6});
 
-        box1.draw();
+        box1.draw(box1);
     }
 
 
