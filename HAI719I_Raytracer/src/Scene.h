@@ -164,16 +164,6 @@ public:
         }
     }
 
-    // Tree buildKDTree(std::vector<std::vector<double>> points) {
-    //     Tree tree;
-
-    //     for (const auto &point : points) {
-    //         tree.insert(point);
-    //     }
-
-    //     return tree;
-    // }
-
     // renvoie un float de l'intersection la plus proche
     float searchFirstIntersection(Ray const &ray)
     {
@@ -261,8 +251,9 @@ public:
 
          //On regarde toutes les meshes
         size_t meshesSize = meshes.size();
-        // if(box.intersects(ray)) {
-            
+        
+        if(box.intersects(ray)) {
+
             for (size_t i = 0; i < meshesSize; i++)
             {
         
@@ -278,7 +269,7 @@ public:
                     }
                 }
             }
-        // }
+        }
 
         // On regarde toutes les spheres
         size_t spheresSize = spheres.size();
