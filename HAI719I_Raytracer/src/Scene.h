@@ -503,8 +503,7 @@ public:
             }
         }
 
-        if(objectIntersect != FLT_MAX)
-            std::cout << objectIntersect << std::endl;
+        
         return objectIntersect;
     }
 
@@ -517,7 +516,7 @@ public:
 
         float distance_to_focus = abs(result - focus_distance);
         float o_distance_to_focus = abs(result + focus_distance);
-
+        std::cout << maxClarity << " " << blur_radius << std::endl;
         if (distance_to_focus < blur_radius || (BackDof && o_distance_to_focus > blur_radius + maxClarity)){
             Vec3 colorB = Vec3(0.,0.,0.);
 
