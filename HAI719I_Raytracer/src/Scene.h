@@ -530,12 +530,12 @@ public:
         }
     }
 
-    Vec3 rayTrace( Ray const & rayStart, float znear) {
+    Vec3 rayTrace( Ray const & rayStart) {
         Vec3 color;
 
         // Si la profondeur de champs est activé
-        if(dof) color = deapthOfField(rayStart, znear);
-        else color = rayTraceRecursive(rayStart, 5, znear);
+        if(dof) color = deapthOfField(rayStart, 4.9);
+        else color = rayTraceRecursive(rayStart, 5, 4.9);
 
         return color;
     }
