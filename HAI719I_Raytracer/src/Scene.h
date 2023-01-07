@@ -292,7 +292,7 @@ public:
 
          //On regarde toutes les meshes
         size_t meshesSize = meshes.size();
-        if(box.intersects(ray)) {
+        // if(box.intersects(ray)) {
             
             for (size_t i = 0; i < meshesSize; i++)
             {
@@ -309,7 +309,7 @@ public:
                     }
                 }
             }
-        }
+        // }
 
         // On regarde toutes les spheres
         size_t spheresSize = spheres.size();
