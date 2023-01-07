@@ -141,12 +141,12 @@ public:
     }
 
     void draw() {
+
+        BoundingBox boxM;
         // iterer sur l'ensemble des objets, et faire leur rendu :
         for( unsigned int It = 0 ; It < meshes.size() ; ++It ) {
             Mesh const & mesh = meshes[It];
             mesh.draw();
-
-            BoundingBox boxM;
             
             std::pair<std::array<float, 3>, std::array<float, 3>> bounds = boxM.getBounds(mesh);
             std::array<float, 3> min = bounds.first;
