@@ -142,19 +142,11 @@ public:
 
     void draw() {
 
-        BoundingBox boxM;
+        
         // iterer sur l'ensemble des objets, et faire leur rendu :
         for( unsigned int It = 0 ; It < meshes.size() ; ++It ) {
             Mesh const & mesh = meshes[It];
             mesh.draw();
-            
-            std::pair<std::array<float, 3>, std::array<float, 3>> bounds = boxM.getBounds(mesh);
-            std::array<float, 3> min = bounds.first;
-            std::array<float, 3> max = bounds.second;
-
-            BoundingBox box1(min, max);
-            boxM.expand(box1);
-            boxM.draw(boxM);
         }
         for( unsigned int It = 0 ; It < spheres.size() ; ++It ) {
             Sphere const & sphere = spheres[It];
@@ -165,7 +157,10 @@ public:
             square.draw();
         }
 
-        box.push_back(boxM);
+        for( unsigned int It = 0 ; It < box.size(); ++It){
+            box[It].draw();
+        }
+        
     }
 
     // renvoie un float de l'intersection la plus proche
@@ -669,7 +664,18 @@ public:
             m.material.shininess = 16;
             m.build_arrays();
         }
+
+        BoundingBox boxM;
+
+        std::pair<std::array<float, 3>, std::array<float, 3>> bounds = boxM.getBounds(mesh);
+        std::array<float, 3> min = bounds.first;
+        std::array<float, 3> max = bounds.second;
+
+        BoundingBox box1(min, max);
+        boxM.expand(box1);
         
+        
+        box.push_back(boxM);
     }
 
 
