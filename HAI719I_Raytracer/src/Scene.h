@@ -499,7 +499,7 @@ public:
             }
         }   
 
-        return resultT;
+        return resultTest;
     }
 
     Vec3 deapthOfField(Ray const & rayStart, float znear){
