@@ -513,7 +513,7 @@ public:
         float blur_radius = (1.0 / aperture_size) * focus_distance; // rayon de confusion en mètres
 
         float result = rayTraceDof(rayStart, znear);
-        std::cout << result << std::endl;
+        
 
         float distance_to_focus = abs(result - focus_distance);
         float o_distance_to_focus = abs(result + focus_distance);
@@ -533,6 +533,8 @@ public:
             // On fait la moyenne pour le flou moyenneur
             color /= 9;
         }
+
+        std::cout << "test" << std::endl;
     }
 
     Vec3 rayTrace( Ray const & rayStart) {
