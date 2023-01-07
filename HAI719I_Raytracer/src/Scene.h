@@ -519,8 +519,8 @@ public:
             // Calcul du nouveau rayon
             for(size_t i = 0; i < 8; i++)
             {
-                std::cout << "test" << std::endl;
                 Vec3 newDir = newDir.nRandom(rayStart.direction());
+                std::cout << "test" << std::endl;
                 Ray newRay = Ray(rayStart.origin(), newDir);
                 colorB += rayTraceRecursive(newRay, 1, znear);
             }
