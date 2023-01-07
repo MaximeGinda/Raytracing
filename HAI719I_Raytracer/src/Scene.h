@@ -503,7 +503,7 @@ public:
     }
 
     Vec3 deapthOfField(Ray const & rayStart, float znear){
-        Vec3 color = rayTraceRecursive(rayStart, 5, znear);
+        Vec3 color = rayTraceRecursive(rayStart, 1, znear);
 
         float blur_radius = (1.0 / aperture_size) * focus_distance; // rayon de confusion en mètres
 
