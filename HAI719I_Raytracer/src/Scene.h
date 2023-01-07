@@ -518,6 +518,7 @@ public:
         float distance_to_focus = abs(result - focus_distance);
         float o_distance_to_focus = abs(result + focus_distance);
         if (distance_to_focus < blur_radius || (BackDof && o_distance_to_focus > blur_radius + maxClarity)){
+            std::cout << "test" << std::endl;
             Vec3 colorB = Vec3(0.,0.,0.);
 
             // Calcul du nouveau rayon
@@ -534,7 +535,7 @@ public:
             color /= 9;
         }
 
-        std::cout << "test" << std::endl;
+        
     }
 
     Vec3 rayTrace( Ray const & rayStart) {
