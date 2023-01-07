@@ -606,7 +606,7 @@ public:
         }
 
         // Deapth of field
-        color = deapthOfField(raySceneIntersection, color, inter);
+        // color = deapthOfField(raySceneIntersection, color, inter);
 
         return color;
     }
