@@ -497,9 +497,7 @@ public:
                     break;
                 }
                 default:
-                {
-                    std::cout << "test" << std::endl;
-
+                {   
                     break;
                 }
             }
@@ -515,6 +513,7 @@ public:
         float blur_radius = (1.0 / aperture_size) * focus_distance; // rayon de confusion en mètres
 
         float result = rayTraceDof(rayStart, znear);
+        std::cout << result << std::endl;
 
         float distance_to_focus = abs(result - focus_distance);
         float o_distance_to_focus = abs(result + focus_distance);
