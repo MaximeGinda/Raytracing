@@ -472,7 +472,7 @@ public:
         return color;
     }
 
-    float rayTraceDof(Ray ray, float znear, float zfar ) {
+    float rayTraceDof(Ray ray, float znear ) {
 
         RaySceneIntersection raySceneIntersection = computeIntersection(ray, znear);
 
@@ -507,7 +507,7 @@ public:
 
         float blur_radius = (1.0 / aperture_size) * focus_distance; // rayon de confusion en mètres
 
-        float resultT = rayTraceDof(rayStart, 5, znear);
+        float resultT = rayTraceDof(rayStart, znear);
 
         float distance_to_focus = abs(resultT - focus_distance);
         float o_distance_to_focus = abs(resultT + focus_distance);
