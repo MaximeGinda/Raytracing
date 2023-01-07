@@ -156,6 +156,7 @@ public:
             boxM.expand(box1);
 
             box.push_back(boxM);
+            std::cout << It << std::endl;
             boxM.draw(boxM);
         }
         for( unsigned int It = 0 ; It < spheres.size() ; ++It ) {
