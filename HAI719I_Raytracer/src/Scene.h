@@ -667,7 +667,8 @@ public:
 
         BoundingBox boxM;
 
-        std::pair<std::array<float, 3>, std::array<float, 3>> bounds = boxM.getBounds(mesh);
+        Mesh &m = meshes[meshes.size() - 1];
+        std::pair<std::array<float, 3>, std::array<float, 3>> bounds = boxM.getBounds(m);
         std::array<float, 3> min = bounds.first;
         std::array<float, 3> max = bounds.second;
 
