@@ -474,32 +474,38 @@ public:
 
     float rayTraceDof(Ray ray, float znear ) {
 
-        RaySceneIntersection raySceneIntersection = computeIntersection(ray, znear);
-
-        float resultTest;
+        RaySceneIntersection raySceneIntersection = computeIntersection(ray, znear, zfar);
+        float objectIntersect;
 
         if(raySceneIntersection.intersectionExists)
         {
-            switch (raySceneIntersection.typeOfIntersectedObject){  
-                case 0:{
-                    resultTest = raySceneIntersection.rayMeshIntersection.t;
+            switch ( raySceneIntersection.typeOfIntersectedObject )
+            {  
+                case 0:
+                {
+                    objectIntersect = raySceneIntersection.rayMeshIntersection.t;
                     break;
                 }
-                case 1:{
-                    resultTest = raySceneIntersection.raySphereIntersection.t;
+                case 1:
+                {
+                    objectIntersect = raySceneIntersection.raySphereIntersection.t;
                     break;
                 }
-                case 2:{
-                    resultTest = raySceneIntersection.raySquareIntersection.t;
+                case 2:
+                {
+                    objectIntersect = raySceneIntersection.raySquareIntersection.t;
                     break;
                 }
-                default:{
+                default:
+                {
                     break;
                 }
             }
-        }   
+        }
 
-        return resultTest;
+        
+
+        return objectIntersect;
     }
 
     Vec3 deapthOfField(Ray const & rayStart, float znear){
