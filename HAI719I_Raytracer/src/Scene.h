@@ -292,20 +292,21 @@ public:
 
          //On regarde toutes les meshes
         size_t meshesSize = meshes.size();
-        if(box.intersects(ray)) 
-            std::cout<< "oui" << std::endl;
-        for (size_t i = 0; i < meshesSize; i++)
-        {
-    
-            RayTriangleIntersection rmi = this->meshes[i].intersect(ray);
-            if (rmi.intersectionExists){
-                // Est-ce que c'est le plus proche ?
-                if (rmi.t > znear && rmi.t < result.t) {
-                    result.intersectionExists = rmi.intersectionExists;
-                    result.typeOfIntersectedObject = 0;
-                    result.objectIndex = i;
-                    result.t = rmi.t;
-                    result.rayMeshIntersection = rmi; 
+        if(box.intersects(ray)) {
+            
+            for (size_t i = 0; i < meshesSize; i++)
+            {
+        
+                RayTriangleIntersection rmi = this->meshes[i].intersect(ray);
+                if (rmi.intersectionExists){
+                    // Est-ce que c'est le plus proche ?
+                    if (rmi.t > znear && rmi.t < result.t) {
+                        result.intersectionExists = rmi.intersectionExists;
+                        result.typeOfIntersectedObject = 0;
+                        result.objectIndex = i;
+                        result.t = rmi.t;
+                        result.rayMeshIntersection = rmi; 
+                    }
                 }
             }
         }
