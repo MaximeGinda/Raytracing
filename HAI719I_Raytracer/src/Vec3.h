@@ -4,6 +4,7 @@
 #include <cmath>
 #include <cstdlib>
 #include <iostream>
+#include <time.h> 
 
 class Vec3;
 static inline Vec3 operator + (Vec3 const & a , Vec3 const & b);
@@ -86,7 +87,7 @@ public:
     }
 
     Vec3 nRandom(Vec3 const & other){
-        
+
         Vec3 res(other[0],other[1],other[2]);
 
         int randMax = 11;
