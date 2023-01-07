@@ -162,13 +162,14 @@ public:
             mesh.draw();
 
             
-
-            std::pair<std::array<double, 3>, std::array<double, 3>> bounds = getBounds(mesh);
-            std::array<double, 3> min = bounds.first;
-            std::array<double, 3> max = bounds.second;
+            BoundingBox box;
+            std::pair<std::array<float, 3>, std::array<float, 3>> bounds = box.getBounds(mesh);
+            std::array<float, 3> min = bounds.first;
+            std::array<float, 3> max = bounds.second;
 
             BoundingBox box1(min, max);
-            box1.draw(box1);
+            box.expand(box1);
+            box.draw(box);
         }
         for( unsigned int It = 0 ; It < spheres.size() ; ++It ) {
             Sphere const & sphere = spheres[It];
