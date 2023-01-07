@@ -86,7 +86,7 @@ struct BoundingBox {
     }
 
     void draw(const BoundingBox &box) {
-        std::array<double, 8> vertices = {
+        std::array<double, 24> vertices = {
             box.min[0], box.min[1], box.min[2],
             box.max[0], box.min[1], box.min[2],
             box.max[0], box.max[1], box.min[2],
