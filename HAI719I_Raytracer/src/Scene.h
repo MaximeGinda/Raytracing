@@ -503,8 +503,6 @@ public:
             }
         }
 
-        st
-
         return objectIntersect;
     }
 
