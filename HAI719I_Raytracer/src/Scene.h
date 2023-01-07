@@ -66,12 +66,12 @@ struct Light {
 // };
 
 struct BoundingBox {
-    std::array<double, 3> min;
-    std::array<double, 3> max;
+    std::array<float, 3> min;
+    std::array<float, 3> max;
 
     BoundingBox() : min({0, 0, 0}), max({0, 0, 0}) {}
 
-    BoundingBox(const std::array<double, 3> &min, const std::array<double, 3> &max) : min(min), max(max) {}
+    BoundingBox(const std::array<float, 3> &min, const std::array<float, 3> &max) : min(min), max(max) {}
 
     bool intersects(const Ray &ray) const {
         // Code de l'intersection de la bounding box et du rayon
@@ -86,7 +86,7 @@ struct BoundingBox {
     }
 
     void draw(const BoundingBox &box) {
-        std::array<double, 24> vertices = {
+        std::array<float, 24> vertices = {
             box.min[0], box.min[1], box.min[2],
             box.max[0], box.min[1], box.min[2],
             box.max[0], box.max[1], box.min[2],
