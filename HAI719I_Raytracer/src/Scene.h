@@ -520,6 +520,7 @@ public:
             {
                 Vec3 newDir = newDir.nRandom(rayStart.direction());
                 Ray newRay = Ray(rayStart.origin(), newDir);
+                std::cout << "test" << std::endl;
                 colorB += rayTraceRecursive(newRay, 1, znear);
             }
 
