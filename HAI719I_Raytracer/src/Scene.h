@@ -7,7 +7,7 @@
 #include "Sphere.h"
 #include "Square.h"
 #include "BoundingBox.h"
-
+#include <array>
 
 #include <GL/glut.h>
 
