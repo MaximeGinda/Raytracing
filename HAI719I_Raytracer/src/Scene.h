@@ -106,7 +106,7 @@ struct BoundingBox {
             4, 0, 3, 3, 7, 4
         };
 
-        glBegin(GL_LINE_STRIP);
+        glBegin(GL_LINES);
         for (unsigned int i : indices) {
             glVertex3d(vertices[3 * i], vertices[3 * i + 1], vertices[3 * i + 2]);
         }
