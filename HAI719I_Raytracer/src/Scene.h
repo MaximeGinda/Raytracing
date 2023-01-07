@@ -525,7 +525,6 @@ public:
             }
 
             color += colorB;
-            std::cout << "test" << std::endl;
             // On fait la moyenne pour le flou moyenneur
             color /= 9;
         }
