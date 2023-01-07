@@ -145,7 +145,7 @@ public:
             Mesh const & mesh = meshes[It];
             mesh.draw();
 
-            BoundingBox box1({-1., -0.5, 0.}, {0.5, 1., 1.5});
+            BoundingBox box1({-1.5, -1., -0.5}, {0.5, 1., 1.5});
 
             box1.draw(box1);
         }
