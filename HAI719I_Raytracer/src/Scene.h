@@ -482,15 +482,15 @@ public:
         {
             switch (raySceneIntersection.typeOfIntersectedObject){  
                 case 0:{
-                    objectIntersect = raySceneIntersection.rayMeshIntersection.t;
+                    resultT = raySceneIntersection.rayMeshIntersection.t;
                     break;
                 }
                 case 1:{
-                    objectIntersect = raySceneIntersection.raySphereIntersection.t;
+                    resultT = raySceneIntersection.raySphereIntersection.t;
                     break;
                 }
                 case 2:{
-                    objectIntersect = raySceneIntersection.raySquareIntersection.t;
+                    resultT = raySceneIntersection.raySquareIntersection.t;
                     break;
                 }
                 default:{
