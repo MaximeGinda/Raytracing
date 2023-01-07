@@ -503,6 +503,8 @@ public:
             }
         }
 
+        if(objectIntersect != FLT_MAX)
+            std::cout << objectIntersect << std::endl;
         return objectIntersect;
     }
 
