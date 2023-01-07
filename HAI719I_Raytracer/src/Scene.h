@@ -476,21 +476,21 @@ public:
 
         RaySceneIntersection raySceneIntersection = computeIntersection(ray, znear);
 
-        float resultT;
+        float resultTest;
 
         if(raySceneIntersection.intersectionExists)
         {
             switch (raySceneIntersection.typeOfIntersectedObject){  
                 case 0:{
-                    resultT = raySceneIntersection.rayMeshIntersection.t;
+                    resultTest = raySceneIntersection.rayMeshIntersection.t;
                     break;
                 }
                 case 1:{
-                    resultT = raySceneIntersection.raySphereIntersection.t;
+                    resultTest = raySceneIntersection.raySphereIntersection.t;
                     break;
                 }
                 case 2:{
-                    resultT = raySceneIntersection.raySquareIntersection.t;
+                    resultTest = raySceneIntersection.raySquareIntersection.t;
                     break;
                 }
                 default:{
