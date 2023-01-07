@@ -106,7 +106,7 @@ struct BoundingBox {
             4, 0, 3, 3, 7, 4
         };
 
-        glBegin(GL_LINE_LOOP);
+        glBegin(GL_TRIANGLES);
         for (unsigned int i : indices) {
             glVertex3d(vertices[3 * i], vertices[3 * i + 1], vertices[3 * i + 2]);
         }
@@ -145,7 +145,7 @@ public:
             Mesh const & mesh = meshes[It];
             mesh.draw();
 
-            BoundingBox box1({0.5, 1, 1.5}, {2, 2.5, 3});
+            BoundingBox box1({-1., -0.5, 0.}, {0.5, 1., 1.5});
 
             box1.draw(box1);
         }
