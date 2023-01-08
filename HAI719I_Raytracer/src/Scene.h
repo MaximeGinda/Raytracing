@@ -58,7 +58,7 @@ class Scene {
     // Deapth of field
     float focus_distance = 0; // distance de mise au point en mètres
     float aperture_size = 0; // taille de l'ouverture en millimètres
-    float maxClarity = 0; //permet de contrôler la distance maximale qui est focus
+    float offset = 0; //permet de contrôler la distance maximale qui est focus
     
     bool dof = false; // active ou desactive la profondeur de champs
     bool BackDof = false; // active ou desactive le flou d'arriere plan
@@ -515,9 +515,9 @@ public:
         float result = rayTraceDof(rayStart, znear);
         
         float distance_to_focus = abs(result - focus_distance);
-        float back_distance_to_focus = abs(result + focus_distance);
+        float back_distance_to_unfocus = abs(result + focus_distance);
 
-        if (distance_to_focus < blur_radius || (BackDof && back_distance_to_focus > blur_radius + maxClarity)){
+        if (distance_to_focus < blur_radius || (BackDof && back_distance_to_unfocus > blur_radius + offset)){
 
             Vec3 colorB = Vec3(0.,0.,0.);
 
@@ -589,7 +589,7 @@ public:
 
         focus_distance = 3;
         aperture_size = 1;
-        maxClarity = 7.5;
+        offset = 7.5;
 
         {
             lights.resize( lights.size() + 1 );
