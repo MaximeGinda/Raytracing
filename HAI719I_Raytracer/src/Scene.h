@@ -892,7 +892,7 @@ public:
             s.scale(Vec3(2., 2., 1.));
             s.translate(Vec3(0., 0., -2.));
             s.build_arrays();  
-            // s.material.type = Material_Mirror;
+            s.material.type = Material_Mirror;
             s.material.diffuse_material = Vec3( 0.,0.,1. );
             s.material.specular_material = Vec3( 1.,1.,1. );
             s.material.shininess = 16;
@@ -907,9 +907,9 @@ public:
             s.translate(Vec3(0., 0., -2.));
             s.rotate_y(90);
             s.build_arrays();
-            s.material.type = Material_Mirror;
-            s.material.diffuse_material = Vec3( 1.,0.,0. );
-            s.material.specular_material = Vec3( 1.,0.,0. );
+            // s.material.type = Material_Mirror;
+            s.material.diffuse_material = Vec3( 1.,0.,1. );
+            s.material.specular_material = Vec3( 1.,0.,1. );
             s.material.shininess = 16;
         }
 
@@ -921,9 +921,9 @@ public:
             s.scale(Vec3(2., 2., 1.));
             s.rotate_y(-90);
             s.build_arrays();
-            s.material.type = Material_Mirror;
-            s.material.diffuse_material = Vec3( 0.0,1.0,0.0 );
-            s.material.specular_material = Vec3( 0.0,1.0,0.0 );
+            // s.material.type = Material_Mirror;
+            s.material.diffuse_material = Vec3( 1.0,1.0,0.0 );
+            s.material.specular_material = Vec3( 1.0,1.0,0.0 );
             s.material.shininess = 16;
         }
 
@@ -963,7 +963,7 @@ public:
             s.scale(Vec3(2., 2., 1.));
             s.rotate_y(180);
             s.build_arrays();
-            // s.material.type = Material_Mirror;
+            s.material.type = Material_Mirror;
             s.material.diffuse_material = Vec3( 1.0,1.0,1.0 );
             s.material.specular_material = Vec3( 1.0,1.0,1.0 );
             s.material.shininess = 16;
