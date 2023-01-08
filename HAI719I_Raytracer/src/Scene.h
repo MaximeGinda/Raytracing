@@ -1000,6 +1000,31 @@ public:
             s.material.index_medium = 0.;
         }
 
+        {
+            meshes.resize(meshes.size() + 1);
+            Mesh &m = meshes[meshes.size() - 1];
+            m.loadOFF("data/suzanne.off");
+            m.centerAndScaleToUnit();
+            m.material.type = Material_Diffuse_Blinn_Phong;
+            m.material.diffuse_material = Vec3(1., 0., 0.);
+            m.material.specular_material = Vec3(1., 1., 1.);
+            m.material.shininess = 16;
+            m.build_arrays();
+        }
+
+        BoundingBox boxM;
+
+        Mesh &m = meshes[meshes.size() - 1];
+        std::pair<std::array<float, 3>, std::array<float, 3>> bounds = boxM.getBounds(m);
+        std::array<float, 3> min = bounds.first;
+        std::array<float, 3> max = bounds.second;
+
+        BoundingBox box1(min, max);
+        boxM.expand(box1);
+        
+        
+        box.push_back(boxM);
+
     }
 
 };
