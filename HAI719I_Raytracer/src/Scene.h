@@ -508,7 +508,7 @@ public:
     }
 
     Vec3 deapthOfField(Ray const & rayStart, float znear){
-        Vec3 color = rayTraceRecursive(rayStart, 5, znear);
+        Vec3 color = rayTraceRecursive(rayStart, 50, znear);
 
         float blur_radius = (1.0 / aperture_size) * focus_distance; // rayon de confusion en mètres
 
@@ -527,7 +527,7 @@ public:
                 Vec3 newDir = newDir.nRandom(rayStart.direction());
                 Ray newRay = Ray(rayStart.origin(), newDir);
                 
-                colorB += rayTraceRecursive(newRay, 1, znear);
+                colorB += rayTraceRecursive(newRay, 50, znear);
             }
 
             color += colorB;
@@ -543,7 +543,7 @@ public:
 
         // Si la profondeur de champs est activé
         if(dof) color = deapthOfField(rayStart, 4.9);
-        else color = rayTraceRecursive(rayStart, 5, 4.9);
+        else color = rayTraceRecursive(rayStart, 50, 4.9);
 
         return color;
     }
@@ -609,7 +609,7 @@ public:
             s.scale(Vec3(2., 2., 1.));
             s.translate(Vec3(0., 0., -2.));
             s.build_arrays();
-            s.material.type = Material_Diffuse_Blinn_Phong;
+            s.material.type = Material_Mirror;
             s.material.diffuse_material = Vec3( 0.,0.,1. );
             s.material.specular_material = Vec3( 1.,1.,1. );
             s.material.shininess = 16;
@@ -624,7 +624,7 @@ public:
             s.translate(Vec3(0., 0., -2.));
             s.rotate_y(90);
             s.build_arrays();
-            s.material.type = Material_Diffuse_Blinn_Phong;
+            s.material.type = Material_Mirror;
             s.material.diffuse_material = Vec3( 1.,0.,0. );
             s.material.specular_material = Vec3( 1.,0.,0. );
             s.material.shininess = 16;
@@ -638,7 +638,7 @@ public:
             s.scale(Vec3(2., 2., 1.));
             s.rotate_y(-90);
             s.build_arrays();
-            s.material.type = Material_Diffuse_Blinn_Phong;
+            s.material.type = Material_Mirror;
             s.material.diffuse_material = Vec3( 0.0,1.0,0.0 );
             s.material.specular_material = Vec3( 0.0,1.0,0.0 );
             s.material.shininess = 16;
@@ -652,7 +652,7 @@ public:
             s.scale(Vec3(2., 2., 1.));
             s.rotate_x(-90);
             s.build_arrays();
-            s.material.type = Material_Diffuse_Blinn_Phong;
+            s.material.type = Material_Mirror;
             s.material.diffuse_material = Vec3(1.,1.,.0 );
             s.material.specular_material = Vec3( 1.0,1.0,1.0 );
             s.material.shininess = 16;
@@ -666,7 +666,7 @@ public:
             s.scale(Vec3(2., 2., 1.));
             s.rotate_x(90);
             s.build_arrays();
-            s.material.type = Material_Diffuse_Blinn_Phong;
+            s.material.type = Material_Mirror;
             s.material.diffuse_material = Vec3( 1.0,1.0,1.0 );
             s.material.specular_material = Vec3( 1.0,1.0,1.0 );
             s.material.shininess = 16;
@@ -680,7 +680,7 @@ public:
             s.scale(Vec3(2., 2., 1.));
             s.rotate_y(180);
             s.build_arrays();
-            s.material.type = Material_Diffuse_Blinn_Phong;
+            s.material.type = Material_Mirror;
             s.material.diffuse_material = Vec3( 1.0,1.0,1.0 );
             s.material.specular_material = Vec3( 1.0,1.0,1.0 );
             s.material.shininess = 16;
@@ -716,6 +716,31 @@ public:
             s.material.transparency = 0.;
             s.material.index_medium = 0.;
         }
+
+        {
+            meshes.resize(meshes.size() + 1);
+            Mesh &m = meshes[meshes.size() - 1];
+            m.loadOFF("data/suzanne.off");
+            m.centerAndScaleToUnit();
+            m.material.type = Material_Diffuse_Blinn_Phong;
+            m.material.diffuse_material = Vec3(1., 0., 0.);
+            m.material.specular_material = Vec3(1., 1., 1.);
+            m.material.shininess = 16;
+            m.build_arrays();
+        }
+
+        BoundingBox boxM;
+
+        Mesh &m = meshes[meshes.size() - 1];
+        std::pair<std::array<float, 3>, std::array<float, 3>> bounds = boxM.getBounds(m);
+        std::array<float, 3> min = bounds.first;
+        std::array<float, 3> max = bounds.second;
+
+        BoundingBox box1(min, max);
+        boxM.expand(box1);
+        
+        
+        box.push_back(boxM);
     }
 
     void setup_single_mesh()
